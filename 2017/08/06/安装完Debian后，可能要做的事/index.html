@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-center-simple.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1、为终端启动添加快捷键在“设置”-&amp;gt;“快捷键”-&amp;gt;“自定义”中添加，名字填 Terminal，命令填 /usr/bin/gnome-terminal，完成后保存并返回，然后添加快捷键，一般设置为 Ctrl+Alt+T。 2、为普通用户授予 sudo 权限打开终端，输入 su，然后依次输入：12chmod +w /etc/sudoersgedit /etc/sudoers 找到： ro">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装完Debian后，可能要做的事">
+<meta property="og:url" content="https://CharloWang.github.io/2017/08/06/安装完Debian后，可能要做的事/index.html">
+<meta property="og:site_name" content="一只不正经的小程序猿">
+<meta property="og:description" content="1、为终端启动添加快捷键在“设置”-&amp;gt;“快捷键”-&amp;gt;“自定义”中添加，名字填 Terminal，命令填 /usr/bin/gnome-terminal，完成后保存并返回，然后添加快捷键，一般设置为 Ctrl+Alt+T。 2、为普通用户授予 sudo 权限打开终端，输入 su，然后依次输入：12chmod +w /etc/sudoersgedit /etc/sudoers 找到： ro">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-19T14:48:58.675Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安装完Debian后，可能要做的事">
+<meta name="twitter:description" content="1、为终端启动添加快捷键在“设置”-&amp;gt;“快捷键”-&amp;gt;“自定义”中添加，名字填 Terminal，命令填 /usr/bin/gnome-terminal，完成后保存并返回，然后添加快捷键，一般设置为 Ctrl+Alt+T。 2、为普通用户授予 sudo 权限打开终端，输入 su，然后依次输入：12chmod +w /etc/sudoersgedit /etc/sudoers 找到： ro">
+
+
+
+
+
+
+  <link rel="canonical" href="https://CharloWang.github.io/2017/08/06/安装完Debian后，可能要做的事/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>安装完Debian后，可能要做的事 | 一只不正经的小程序猿</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">一只不正经的小程序猿</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2017/08/06/安装完Debian后，可能要做的事/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Charlo">
+      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只不正经的小程序猿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">安装完Debian后，可能要做的事
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2017-08-06 00:00:00" itemprop="dateCreated datePublished" datetime="2017-08-06T00:00:00+08:00">2017-08-06</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-19 22:48:58" itemprop="dateModified" datetime="2018-11-19T22:48:58+08:00">2018-11-19</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1、为终端启动添加快捷键"><a href="#1、为终端启动添加快捷键" class="headerlink" title="1、为终端启动添加快捷键"></a>1、为终端启动添加快捷键</h2><p>在“设置”-&gt;“快捷键”-&gt;“自定义”中添加，名字填 <code>Terminal</code>，命令填 <code>/usr/bin/gnome-terminal</code>，完成后保存并返回，然后添加快捷键，一般设置为 <code>Ctrl+Alt+T</code>。</p>
+<h2 id="2、为普通用户授予-sudo-权限"><a href="#2、为普通用户授予-sudo-权限" class="headerlink" title="2、为普通用户授予 sudo 权限"></a>2、为普通用户授予 sudo 权限</h2><p>打开终端，输入 <code>su</code>，然后依次输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +w /etc/sudoers</span><br><span class="line">gedit /etc/sudoers</span><br></pre></td></tr></table></figure></p>
+<p>找到： <code>root ALL=(ALL) ALL</code> 这一行，在这行下面添加：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxx ALL=(ALL) ALL (这里的xxx为你想要授予sudo权限的用户名，基本就是当前用户名)</span><br></pre></td></tr></table></figure></p>
+<p>然后保存并退出，最后在终端中输入： <code>chmod -w /etc/sudoers</code>。</p>
+<h2 id="3、wifi被硬件禁止"><a href="#3、wifi被硬件禁止" class="headerlink" title="3、wifi被硬件禁止"></a>3、wifi被硬件禁止</h2><p>很多时候新安装完Debian，wifi可能被硬件禁止了，这里有两种方式来打开，博主用第一种亲测有效。<br>方法一：<br>在终端中输入： <code>echo &#39;options asus-nb-wmi wapf=4&#39; &gt; /etc/modprobe.d/asus.conf</code><br>方法二：<br>在终端中输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfkill list all</span><br><span class="line">sudo rfkill unblock all</span><br></pre></td></tr></table></figure></p>
+<h2 id="4、添加数据源"><a href="#4、添加数据源" class="headerlink" title="4、添加数据源"></a>4、添加数据源</h2><p>国内比较好用的源包括163、中科大、清华等，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">##163源</span><br><span class="line">deb http://mirrors.163.com/debian/ jessie main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian/ jessie-updates main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian/ jessie-backports main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ jessie main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ jessie-updates main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian/ jessie-backports main non-free contrib</span><br><span class="line">deb http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib</span><br><span class="line">deb-src http://mirrors.163.com/debian-security/ jessie/updates main non-free contrib</span><br><span class="line"></span><br><span class="line">##中科大源</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian jessie main contrib non-free</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/debian jessie main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian jessie-proposed-updates main contrib non-free</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/debian jessie-proposed-updates main contrib non-free</span><br><span class="line">deb http://mirrors.ustc.edu.cn/debian jessie-updates main contrib non-free</span><br><span class="line">deb-src http://mirrors.ustc.edu.cn/debian jessie-updates main contrib non-free</span><br><span class="line"></span><br><span class="line">##清华源</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/debian/ jessie main non-free contrib</span><br><span class="line">deb http://mirrors.tuna.tsinghua.edu.cn/ jessie-proposed-updates main non-free contrib</span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ jessie main non-free contrib</span><br><span class="line">deb-src http://mirrors.tuna.tsinghua.edu.cn/ jessie-proposed-updates main non-free contrib</span><br></pre></td></tr></table></figure></p>
+<p>在终端中输入： <code>sudo gedit /etc/apt/sources.list</code>，将上面的任意一个源添加到文件中，保存并退出，然后在终端中输入： <code>sudo apt-get update</code>，至此数据源就已经配置成功了。</p>
+<h2 id="5、安装基本编译环境"><a href="#5、安装基本编译环境" class="headerlink" title="5、安装基本编译环境"></a>5、安装基本编译环境</h2><p>在终端中输入： <code>sudo apt-get install gcc build-essential</code>。</p>
+<h2 id="6、安装中文输入法（google输入法）"><a href="#6、安装中文输入法（google输入法）" class="headerlink" title="6、安装中文输入法（google输入法）"></a>6、安装中文输入法（google输入法）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install install fcitx fcitx-module-x11</span><br><span class="line">sudo apt-get install fcitx-googlepinyin</span><br><span class="line">sudo apt-get install fcitx-ui-classic fcitx-ui-light</span><br><span class="line">sudo apt-get install fcitx-frontend-gtk3 fcitx-frontend-gtk2 fcitx-config-gtk</span><br></pre></td></tr></table></figure>
+<p>安装完成之后，到fcitx软件中选择输入法，并在全局配置–&gt;高级中激活输入法。在输入法软件中配置fcitx。   </p>
+<h2 id="7、创建pppoe上网连接"><a href="#7、创建pppoe上网连接" class="headerlink" title="7、创建pppoe上网连接"></a>7、创建pppoe上网连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install pppoeconf</span><br><span class="line">pppoeconf</span><br><span class="line">进入“ALL DEVICDS FOUND?”画面，选择“YES&quot;</span><br><span class="line">进入“OKAY TO MODIFY”画面，确认将要修改/etc/ppp/peers/dsl-provider文件，选择“YES”</span><br><span class="line">在“POPULAR OPTIONS”画面中，这里一定选择“NO”</span><br><span class="line">进入“ENTER USERNAME”画面，输入ADSL用户名</span><br><span class="line">进入“ENTER PASSWORD”画面，输入ADSL密码</span><br><span class="line">进入“USE PEER DNS”画面，选择“YES”</span><br><span class="line">进入“LIMITED MSS PROBLEM”画面，选择“YES”</span><br><span class="line">进入“DONE”画面，询问是否在系统启动时自动拨号连接</span><br><span class="line">进入“ESTABLISH A CONNECTION”画面，询问是否现在就进行连接</span><br><span class="line">完成！！！</span><br><span class="line">手工拨号：pon /etc/ppp/peers/dsl-provider</span><br><span class="line">查看日志：plog</span><br><span class="line">断开连接：poff</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">创建pppoe连接后，会出现联网图标消失的情况，解决办法：</span><br><span class="line">将/etc/NetworkManager/NetworkManager.conf中的ifupdown的manager修改为true，然后重启即可。</span><br><span class="line">或者同时修改/etc/network/interfaces，删除所有内容，只留下auto lo和</span><br><span class="line">iface lo inet loopback这两行。</span><br></pre></td></tr></table></figure>
+<h2 id="8、自动挂载NTFS分区"><a href="#8、自动挂载NTFS分区" class="headerlink" title="8、自动挂载NTFS分区"></a>8、自动挂载NTFS分区</h2><p>首先查看分区情况：<code>sudofdisk -l</code>,<br>然后为想要挂载的分区创建挂载点，在 <code>/media/用户名/</code> 下创建文件夹，如hd1、hd2、hd3…<br>然后 <code>sudo gedit /etc/fstab</code>，在文件尾部添加：<br><code>/dev/分区号 /media/用户名/hd1 ntfs-3g defaults,locale=zh_CN.UTF-8 0 0</code></p>
+<h2 id="9、将本地ISO镜像作为软件安装源"><a href="#9、将本地ISO镜像作为软件安装源" class="headerlink" title="9、将本地ISO镜像作为软件安装源"></a>9、将本地ISO镜像作为软件安装源</h2><p>如果你当前处于无网的状态，可以使用本地的镜像作为软件安装源。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo mount -t iso9660 -o loop /镜像地址 /media/cdrom0/  （将镜像加载到cdrom0光驱）</span><br><span class="line">sudo apt-cdrom -m -d /media/cdrom0/ add</span><br><span class="line">sudo apt-get update</span><br><span class="line">#这样就可以安装软件了</span><br><span class="line">sudo apt-get install xxx</span><br></pre></td></tr></table></figure></p>
+<h2 id="10、主题安装"><a href="#10、主题安装" class="headerlink" title="10、主题安装"></a>10、主题安装</h2><p>去gnome主题网站下载主题后，解压后放到/usr/share/themes中。安装gnome-tweak-tool工具，在优化工具–&gt;扩展，中打开user主题。然后在外观–&gt;主题中切换即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#主题网站</span><br><span class="line">https://www.gnome-look.org/browse/cat/135/</span><br><span class="line">http://www.deviantart.com/customization/skins/linuxutil/desktopenv/gnome/popular-all-time/?q=gnome</span><br></pre></td></tr></table></figure></p>
+<h2 id="11、安装Dock（底部导航栏，类似于MacOS的Dock）"><a href="#11、安装Dock（底部导航栏，类似于MacOS的Dock）" class="headerlink" title="11、安装Dock（底部导航栏，类似于MacOS的Dock）"></a>11、安装Dock（底部导航栏，类似于MacOS的Dock）</h2><p>Linux下好看的Dock有好几个，比如：Docky、Avant Window Navigator、Cairo-Dock等，这里我用Dash to Dock。<br>打开“优化工具”，找到“扩展”-&gt;”Shell 扩展”，搜索并下载安装Dock，安装完成后即可看到界面的变化。</p>
+<h2 id="12、将任务栏设置为透明"><a href="#12、将任务栏设置为透明" class="headerlink" title="12、将任务栏设置为透明"></a>12、将任务栏设置为透明</h2><p>感觉Debian的任务栏很丑，我们可以将其修改为透明<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">先备份一份文件，防止修改不成功又还原不了了：   </span><br><span class="line">sudo cp /usr/share/gnome-shell/theme/gnome-shell.css /usr/share/gnome-shell/theme/gnome-shell.css.bak</span><br><span class="line">修改gnome的样式文件：   </span><br><span class="line">gedit /usr/share/gnome-shell/theme/gnome-shell.css</span><br><span class="line">找到 `#panel`，将其中的： `background-color:black `改为： `background-color: rgba(0,0,0,0.3)`   </span><br><span class="line">再往下找，找到 `.panel-corner`，</span><br><span class="line">将`-panel-coner-background-color:black`改为： `-panel-coner-background-color:rgba(0,0,0,0.5)`   </span><br><span class="line">改完并保存后，需要先注销再重新登录，否则可能出现界面卡死的情况。</span><br></pre></td></tr></table></figure></p>
+<h2 id="13、音乐播放器Rhythmbox中文乱码"><a href="#13、音乐播放器Rhythmbox中文乱码" class="headerlink" title="13、音乐播放器Rhythmbox中文乱码"></a>13、音乐播放器Rhythmbox中文乱码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit .profile</span><br><span class="line">添加：</span><br><span class="line">export GST_ID3_TAG_ENCODING=GBK:UTF-8:GB18030</span><br><span class="line">export GST_ID3V2_TAG_ENCODING=GBK:UTF-8:GB18030</span><br></pre></td></tr></table></figure>
+<h2 id="14、为应用创建快捷图标"><a href="#14、为应用创建快捷图标" class="headerlink" title="14、为应用创建快捷图标"></a>14、为应用创建快捷图标</h2><p>以eclipse创建快捷图标为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sudo gedit  /usr/share/applications/eclipse.desktop</span><br><span class="line">加入：</span><br><span class="line">#具体配置，视个人情况而定</span><br><span class="line">[Desktop Entry]</span><br><span class="line">Encoding=UTF-8</span><br><span class="line">Name=Eclipse</span><br><span class="line">Comment=Eclipse IDE</span><br><span class="line">Exec=/usr/local/eclipse/eclipse      (执行文件)</span><br><span class="line">Icon=/usr/local/eclipse/icon.xpm     (图标)</span><br><span class="line">Terminal=false</span><br><span class="line">Type=Application</span><br><span class="line">Categories=GNOME;Application;Development;</span><br><span class="line">StartupNotify=true</span><br></pre></td></tr></table></figure></p>
+<p>保存后退出即可在软件列表中看到。</p>
+<h2 id="15、JDK安装"><a href="#15、JDK安装" class="headerlink" title="15、JDK安装"></a>15、JDK安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">先解压jdk文件： tar -zvxf jdk-8u101-linux-x64.tar.gz</span><br><span class="line">然后将解压文件复制到 /usr/local 文件夹下：sudo cp -r jdk-8u101-linux-x64 /usr/local</span><br><span class="line">gedit ~/.bashrc</span><br><span class="line">添加：</span><br><span class="line">export JAVA_HOME=/jdk安装目录</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</span><br><span class="line">然后：</span><br><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>东拼西凑+主观臆断，有用最好、没用拉倒。。。</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://i.postimg.cc/QxBWCVKX/dashang.jpg" alt="Charlo 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"> Linux</i></a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/23/Java计算两个日期的时间差/" rel="next" title="Java计算两个日期的时间差">
+                <i class="fa fa-chevron-left"></i> Java计算两个日期的时间差
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/Linux中python虚拟环境的创建/" rel="prev" title="Linux中python虚拟环境的创建">
+                Linux中python虚拟环境的创建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://i.postimg.cc/N0PcKGHc/touxiang.jpg" alt="Charlo">
+            
+              <p class="site-author-name" itemprop="name">Charlo</p>
+              <p class="site-description motion-element" itemprop="description">..DD的记录</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/CharloWang" title="GitHub &rarr; https://github.com/CharloWang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:wcl98854@gmail.com" title="E-Mail &rarr; mailto:wcl98854@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://example.com" title="http://example.com" rel="noopener" target="_blank">Title</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、为终端启动添加快捷键"><span class="nav-number">1.</span> <span class="nav-text">1、为终端启动添加快捷键</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、为普通用户授予-sudo-权限"><span class="nav-number">2.</span> <span class="nav-text">2、为普通用户授予 sudo 权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、wifi被硬件禁止"><span class="nav-number">3.</span> <span class="nav-text">3、wifi被硬件禁止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、添加数据源"><span class="nav-number">4.</span> <span class="nav-text">4、添加数据源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5、安装基本编译环境"><span class="nav-number">5.</span> <span class="nav-text">5、安装基本编译环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6、安装中文输入法（google输入法）"><span class="nav-number">6.</span> <span class="nav-text">6、安装中文输入法（google输入法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7、创建pppoe上网连接"><span class="nav-number">7.</span> <span class="nav-text">7、创建pppoe上网连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8、自动挂载NTFS分区"><span class="nav-number">8.</span> <span class="nav-text">8、自动挂载NTFS分区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9、将本地ISO镜像作为软件安装源"><span class="nav-number">9.</span> <span class="nav-text">9、将本地ISO镜像作为软件安装源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10、主题安装"><span class="nav-number">10.</span> <span class="nav-text">10、主题安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11、安装Dock（底部导航栏，类似于MacOS的Dock）"><span class="nav-number">11.</span> <span class="nav-text">11、安装Dock（底部导航栏，类似于MacOS的Dock）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12、将任务栏设置为透明"><span class="nav-number">12.</span> <span class="nav-text">12、将任务栏设置为透明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13、音乐播放器Rhythmbox中文乱码"><span class="nav-number">13.</span> <span class="nav-text">13、音乐播放器Rhythmbox中文乱码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14、为应用创建快捷图标"><span class="nav-number">14.</span> <span class="nav-text">14、为应用创建快捷图标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15、JDK安装"><span class="nav-number">15.</span> <span class="nav-text">15、JDK安装</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Charlo | Email: wcl98854@gmail.com</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v6.5.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="总访客量">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="总访问量">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
