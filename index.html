@@ -115,16 +115,16 @@
 
 
 
-  <meta name="description" content="..DD的记录">
+  <meta name="description" content="一点一滴的记录">
 <meta property="og:type" content="website">
 <meta property="og:title" content="一只不正经的小程序猿">
 <meta property="og:url" content="https://CharloWang.github.io/index.html">
 <meta property="og:site_name" content="一只不正经的小程序猿">
-<meta property="og:description" content="..DD的记录">
+<meta property="og:description" content="一点一滴的记录">
 <meta property="og:locale" content="zh-CN">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一只不正经的小程序猿">
-<meta name="twitter:description" content="..DD的记录">
+<meta name="twitter:description" content="一点一滴的记录">
 
 
 
@@ -341,11 +341,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/12/01/HAProxy安装配置/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/08/19/Mysql的count查询优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -361,7 +361,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2018/12/01/HAProxy安装配置/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">HAProxy安装配置</a>
+                <a href="/2018/08/19/Mysql的count查询优化/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">Mysql的count查询优化</a>
               
             
           </h1>
@@ -386,12 +386,199 @@
                 
               
 
-              <time title="创建时间：2018-12-01 23:19:00 / 修改时间：23:29:53" itemprop="dateCreated datePublished" datetime="2018-12-01T23:19:00+08:00">2018-12-01</time>
+              <time title="创建时间：2018-08-19 22:20:43" itemprop="dateCreated datePublished" datetime="2018-08-19T22:20:43+08:00">2018-08-19</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-02-18 23:03:11" itemprop="dateModified" datetime="2019-02-18T23:03:11+08:00">2019-02-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一般情况下，单张表的数据量达到百万级别时，对整张表做count查询时，速度会比较慢，一般在5秒以上。</p>
+<h3 id="优化方向：利用mysql的索引"><a href="#优化方向：利用mysql的索引" class="headerlink" title="优化方向：利用mysql的索引"></a>优化方向：利用mysql的索引</h3><p>实例场景：</p>
+<ul>
+<li>my_product表的引擎。如图：<br><img src="https://i.postimg.cc/wxc5Kxrw/Snipaste-2018-11-15-15-47-48.png" alt="引擎"></li>
+<li>my_product表，数据量在百万以上，列级元素的量相对适中。如图:<br><img src="https://i.postimg.cc/Gp8P6F0D/Snipaste-2018-11-15-15-15-38.png" alt="my_product的表结构">  </li>
+<li>my_product表中的数据量，如图：<br><img src="https://i.postimg.cc/8z0PXkr6/Snipaste-2018-11-15-15-20-09.png" alt="my_product表的数据量"></li>
+<li>已创建的索引，如图：<br><img src="https://i.postimg.cc/xCSQBXjc/Snipaste-2018-11-15-15-34-36.png" alt="索引"></li>
+</ul>
+<h4 id="A、简单的count查询"><a href="#A、简单的count查询" class="headerlink" title="A、简单的count查询"></a>A、简单的count查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product;</span><br></pre></td></tr></table></figure>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/Px1W5d5r/Snipaste-2018-11-15-15-30-13.png" alt="结果"><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) <span class="keyword">from</span> my_product;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.postimg.cc/5y1wHDX5/Snipaste-2018-11-15-15-40-25.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/YqTsdJCS/Snipaste-2018-11-15-15-32-17.png" alt="分析"><br><img src="https://i.postimg.cc/zD6sQLd5/Snipaste-2018-11-15-15-41-50.png" alt="分析"></p>
+<h6 id="从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。"><a href="#从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。" class="headerlink" title="从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。"></a>从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。</h6><h4 id="B、带条件的count查询【使用主键索引】"><a href="#B、带条件的count查询【使用主键索引】" class="headerlink" title="B、带条件的count查询【使用主键索引】"></a>B、带条件的count查询【使用主键索引】</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/MpX1j7pL/Snipaste-2018-11-15-15-53-35.png" alt="结果"><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure></p>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/dVXrRh7V/Snipaste-2018-11-15-15-54-57.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/250J73qs/Snipaste-2018-11-15-15-57-28.png" alt="分析"></p>
+<h6 id="从结果分析可以看出，该查询使用了主键索引，键长为110-虽然本次查询使用了索引，但是时间任然非常长。"><a href="#从结果分析可以看出，该查询使用了主键索引，键长为110-虽然本次查询使用了索引，但是时间任然非常长。" class="headerlink" title="从结果分析可以看出，该查询使用了主键索引，键长为110.虽然本次查询使用了索引，但是时间任然非常长。"></a>从结果分析可以看出，该查询使用了主键索引，键长为110.虽然本次查询使用了索引，但是时间任然非常长。</h6><h4 id="C、使用了索引的count查询【自建索引】"><a href="#C、使用了索引的count查询【自建索引】" class="headerlink" title="C、使用了索引的count查询【自建索引】"></a>C、使用了索引的count查询【自建索引】</h4><p>创建一个新的索引，索引字段为audit_state。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> my_product <span class="keyword">add</span> <span class="keyword">index</span> idx_audit_state(audit_state);</span><br></pre></td></tr></table></figure></p>
+<p>然后同样使用原来的查询条件<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure></p>
+<p>mysql查询结果：<br><img src="https://i.postimg.cc/PqwZSdZz/Snipaste-2018-11-15-16-07-12.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/Bv7Y1yks/Snipaste-2018-11-15-16-11-50.png" alt="分析"></p>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><p>从上面两个对比可以看出，虽然b、c两种查询都使用了索引，但b查询使用的是主键索引，而c查询使用的是自建索引。<br>主键索引默认直接指向数据存储位置，而自建索引存储指定字段的索引，实际的指向位置是主键索引。当我们通过自建索引统计数据的时候，无需扫描数据文件；而通过主键索引统计数据时，由于主键索引与数据文件存放在一起，所以每次都会扫描数据文件，所以主键索引统计没有自建索引效率高。</p>
+<p>由于主键索引直接指向实际数据，所以当我们通过主键id查询数据时要比通过二级索引查询数据要快。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/07/01/HAProxy安装配置/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Charlo">
+      <meta itemprop="description" content="一点一滴的记录">
+      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只不正经的小程序猿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/07/01/HAProxy安装配置/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">HAProxy安装配置</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-07-01 23:19:00" itemprop="dateCreated datePublished" datetime="2018-07-01T23:19:00+08:00">2018-07-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-02-18 22:16:59" itemprop="dateModified" datetime="2019-02-18T22:16:59+08:00">2019-02-18</time>
               
             
           </span>
@@ -489,11 +676,11 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/06/25/RabbitMQ使用/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/06/27/RabbitMQ使用场景及实例/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -509,7 +696,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2018/06/25/RabbitMQ使用/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">RabbitMQ使用</a>
+                <a href="/2018/06/27/RabbitMQ使用场景及实例/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">RabbitMQ使用场景及实例</a>
               
             
           </h1>
@@ -534,7 +721,7 @@
                 
               
 
-              <time title="创建时间：2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+              <time title="创建时间：2018-06-27 21:48:02" itemprop="dateCreated datePublished" datetime="2018-06-27T21:48:02+08:00">2018-06-27</time>
             
 
             
@@ -551,7 +738,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-01 22:56:19" itemprop="dateModified" datetime="2018-12-01T22:56:19+08:00">2018-12-01</time>
+                <time title="修改时间：2019-01-14 12:00:17" itemprop="dateModified" datetime="2019-01-14T12:00:17+08:00">2019-01-14</time>
               
             
           </span>
@@ -586,16 +773,7 @@
       
         
           
-            <h2 id="RabbitMQ官方介绍："><a href="#RabbitMQ官方介绍：" class="headerlink" title="RabbitMQ官方介绍："></a>RabbitMQ官方介绍：</h2><blockquote>
-<p>RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that Mr. or Ms. Mailperson will eventually deliver the mail to your recipient. In this analogy, RabbitMQ is a post box, a post office and a postman.<br>The major difference between RabbitMQ and the post office is that it doesn’t deal with paper, instead it accepts, stores and forwards binary blobs of data ‒ messages.<br>翻译：<br>RabbitMQ 是一个消息代理: 它接受和转发消息。你可以把它想成邮局: 当你把你想要投递的信件放入邮箱, 你可以确信邮递员最终会将邮件传递给你的收件人。在这个比喻中, RabbitMQ 是一个邮箱, 一个邮局和一个邮递员。<br>RabbitMQ 和邮局的主要区别在于它不处理纸面文件, 而是接受、存储和转发二进制的消息数据。</p>
-</blockquote>
-<h3 id="RabbitMQ安装："><a href="#RabbitMQ安装：" class="headerlink" title="RabbitMQ安装："></a>RabbitMQ安装：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">添加源：</span><br><span class="line">echo &apos;deb http://www.rabbitmq.com/debian/ testing main&apos; | sudo tee /etc/apt/sources.list.d/rabbitmq.list</span><br><span class="line">添加公钥：</span><br><span class="line">wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install rabbitmq-server</span><br></pre></td></tr></table></figure>
-<p>看看是不是有rabbitmq的进程：<code>pgrep -l rabbit</code>，看到有rabbit的进程则表示安装成功。<br>程序连接服务的端口是：5672<br>远程访问rabbitmq【浏览器管理rabbitmq】：localhost:15672或者ip:15672</p>
-<h3 id="不能远程怎么办？"><a href="#不能远程怎么办？" class="headerlink" title="不能远程怎么办？"></a>不能远程怎么办？</h3><p>答案是需要开启权限，默认是不能远程访问的</p>
-<blockquote>
-<p>在<code>/etc/rabbitmq</code>下新增rabbitmq.config文件， 输入：<br>[<br>{rabbit, [{tcp_listeners, [5672]}, {loopback_users, [“abcd”]}]}<br>].<br>然后授权：<br>cd /usr/lib/rabbitmq/bin/<br>sudo rabbitmqctl add_user abcd password<br>sudo rabbitmqctl set_user_tags abcd administrator<br>sudo rabbitmqctl set_permissions -p / abcd “.<em>“ “.</em>“ “.*”<br>之后重启服务就可以了。</p>
-</blockquote>
-<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="1、异步处理"><a href="#1、异步处理" class="headerlink" title="1、异步处理"></a>1、异步处理</h3><p>场景说明：用户注册后，需要发注册邮件和注册短信,传统的做法有两种：1.串行的方式；2.并行的方式<br>(1)串行方式:将注册信息写入数据库后,发送注册邮件,再发送注册短信,以上三个任务全部完成后才返回给客户端。 这有一个问题是,邮件,短信并不是必须的,它只是一个通知,而这种做法让客户端等待没有必要等待的东西.<br><img src="https://upload-images.jianshu.io/upload_images/9594901-6918481e3293ffb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="串行场景"><br>(2)并行方式:将注册信息写入数据库后,发送邮件的同时,发送短信,以上三个任务完成后,返回给客户端,并行的方式能提高处理的时间。<br><img src="https://upload-images.jianshu.io/upload_images/9594901-3f9a7fbef35f5d6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="并行场景"><br>假设三个业务节点分别使用50ms,串行方式使用时间150ms,并行使用时间100ms。虽然并性已经提高的处理时间,但是,前面说过,邮件和短信对我正常的使用网站没有任何影响，客户端没有必要等着其发送完成才显示注册成功,英爱是写入数据库后就返回。<br>(3)消息队列<br>引入消息队列后，把发送邮件,短信不是必须的业务逻辑异步处理<br><img src="https://upload-images.jianshu.io/upload_images/9594901-4dd09d1a26f146f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="消息队列场景"><br>由此可以看出,引入消息队列后，用户的响应时间就等于写入数据库的时间+写入消息队列的时间(可以忽略不计),引入消息队列后处理后,响应时间是串行的3倍,是并行的2倍。</p>
+            <h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="1、异步处理"><a href="#1、异步处理" class="headerlink" title="1、异步处理"></a>1、异步处理</h3><p>场景说明：用户注册后，需要发注册邮件和注册短信,传统的做法有两种：1.串行的方式；2.并行的方式<br>(1)串行方式:将注册信息写入数据库后,发送注册邮件,再发送注册短信,以上三个任务全部完成后才返回给客户端。 这有一个问题是,邮件,短信并不是必须的,它只是一个通知,而这种做法让客户端等待没有必要等待的东西.<br><img src="https://upload-images.jianshu.io/upload_images/9594901-6918481e3293ffb7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="串行场景"><br>(2)并行方式:将注册信息写入数据库后,发送邮件的同时,发送短信,以上三个任务完成后,返回给客户端,并行的方式能提高处理的时间。<br><img src="https://upload-images.jianshu.io/upload_images/9594901-3f9a7fbef35f5d6c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="并行场景"><br>假设三个业务节点分别使用50ms,串行方式使用时间150ms,并行使用时间100ms。虽然并性已经提高的处理时间,但是,前面说过,邮件和短信对我正常的使用网站没有任何影响，客户端没有必要等着其发送完成才显示注册成功,英爱是写入数据库后就返回。<br>(3)消息队列<br>引入消息队列后，把发送邮件,短信不是必须的业务逻辑异步处理<br><img src="https://upload-images.jianshu.io/upload_images/9594901-4dd09d1a26f146f0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="消息队列场景"><br>由此可以看出,引入消息队列后，用户的响应时间就等于写入数据库的时间+写入消息队列的时间(可以忽略不计),引入消息队列后处理后,响应时间是串行的3倍,是并行的2倍。</p>
 <h3 id="2、应用解耦"><a href="#2、应用解耦" class="headerlink" title="2、应用解耦"></a>2、应用解耦</h3><p>场景：双11是购物狂节,用户下单后,订单系统需要通知库存系统,传统的做法就是订单系统调用库存系统的接口。<br><img src="https://upload-images.jianshu.io/upload_images/9594901-bf899921dc88943f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="订单场景"><br>这种做法有一个缺点:</p>
 <ul>
 <li>当库存系统出现故障时,订单就会失败。(这样马云将少赚好多好多钱^ ^)</li>
@@ -615,15 +793,9 @@
 <p>2.queue持久化,在声明时指定durable =&gt; true<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.QueueDeclare(QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);//声明消息队列，且为可持久化的</span><br></pre></td></tr></table></figure></p>
 <p>3.消息持久化,在投递时指定delivery_mode =&gt; 2(1是非持久化)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.basicPublish(&quot;&quot;, queueName, MessageProperties.PERSISTENT_TEXT_PLAIN, msg.getBytes());</span><br></pre></td></tr></table></figure></p>
 <p>如果exchange和queue都是持久化的,那么它们之间的binding也是持久化的,如果exchange和queue两者之间有一个持久化，一个非持久化,则不允许建立绑定。<br><strong>注意：一旦创建了队列和交换机,就不能修改其标志了,例如,创建了一个non-durable的队列,然后想把它改变成durable的,唯一的办法就是删除这个队列然后重现创建。</strong></p>
-<h3 id="Fair-dispath-公平分发"><a href="#Fair-dispath-公平分发" class="headerlink" title="Fair dispath 公平分发"></a>Fair dispath 公平分发</h3><p>你可能也注意到了,分发机制不是那么优雅,默认状态下,RabbitMQ将第n个Message分发给第n个Consumer。n是取余后的,它不管Consumer是否还有unacked Message，只是按照这个默认的机制进行分发。<br>那么如果有个Consumer工作比较重,那么就会导致有的Consumer基本没事可做,有的Consumer却毫无休息的机会,那么,Rabbit是如何处理这种问题呢?<br><img src="https://upload-images.jianshu.io/upload_images/9594901-df7e67b3665eb265.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="公平分发"><br>通过basic.qos方法设置prefetch_count=1，这样RabbitMQ就会使得每个Consumer在同一个时间点最多处理一个Message，换句话说,在接收到该Consumer的ack前,它不会将新的Message分发给它。</p>
-<blockquote>
-<p>channel.basic_qos(prefetch_count=1) </p>
-</blockquote>
+<h3 id="Fair-dispath-公平分发"><a href="#Fair-dispath-公平分发" class="headerlink" title="Fair dispath 公平分发"></a>Fair dispath 公平分发</h3><p>你可能也注意到了,分发机制不是那么优雅,默认状态下,RabbitMQ将第n个Message分发给第n个Consumer。n是取余后的,它不管Consumer是否还有unacked Message，只是按照这个默认的机制进行分发。<br>那么如果有个Consumer工作比较重,那么就会导致有的Consumer基本没事可做,有的Consumer却毫无休息的机会,那么,Rabbit是如何处理这种问题呢?<br><img src="https://upload-images.jianshu.io/upload_images/9594901-df7e67b3665eb265.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="公平分发"><br>通过basic.qos方法设置prefetch_count=1，这样RabbitMQ就会使得每个Consumer在同一个时间点最多处理一个Message，换句话说,在接收到该Consumer的ack前,它不会将新的Message分发给它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.basic_qos(prefetch_count=1)</span><br></pre></td></tr></table></figure></p>
 <p><strong>注意，这种方法可能会导致queue满。当然，这种情况下你可能需要添加更多的Consumer，或者创建更多的virtualHost来细化你的设计。</strong></p>
-<h3 id="分发到多个Consumer"><a href="#分发到多个Consumer" class="headerlink" title="分发到多个Consumer"></a>分发到多个Consumer</h3><h4 id="Exchange"><a href="#Exchange" class="headerlink" title="Exchange"></a>Exchange</h4><p>先来温习以下交换机路由的几种类型:<br>1、Direct Exchange:直接匹配,通过Exchange名称+RountingKey来发送与接收消息。<br>2、Fanout Exchange:广播订阅,向所有的消费者发布消息,但是只有消费者将队列绑定到该路由器才能收到消息,忽略Routing Key。<br>3、Topic Exchange：主题匹配订阅,这里的主题指的是RoutingKey,RoutingKey可以采用通配符,如:*或#，RoutingKey命名采用.来分隔多个词,只有消息这将队列绑定到该路由器且指定RoutingKey符合匹配规则时才能收到消息。<br>4、Headers Exchange:消息头订阅,消息发布前,为消息定义一个或多个键值对的消息头,然后消费者接收消息同时需要定义类似的键值对请求头:(如:x-mactch=all或者x_match=any)，只有请求头与消息头匹配,才能接收消息,忽略RoutingKey。<br>5、默认的exchange:如果用空字符串去声明一个exchange，那么系统就会使用”amq.direct”这个exchange，我们创建一个queue时,默认的都会有一个和新建queue同名的routingKey绑定到这个默认的exchange上去。</p>
-<blockquote>
-<p>channel.BasicPublish(“”, “TaskQueue”, properties, bytes);</p>
-</blockquote>
+<h3 id="分发到多个Consumer"><a href="#分发到多个Consumer" class="headerlink" title="分发到多个Consumer"></a>分发到多个Consumer</h3><h4 id="Exchange"><a href="#Exchange" class="headerlink" title="Exchange"></a>Exchange</h4><p>先来温习以下交换机路由的几种类型:<br>1、Direct Exchange:直接匹配,通过Exchange名称+RountingKey来发送与接收消息。<br>2、Fanout Exchange:广播订阅,向所有的消费者发布消息,但是只有消费者将队列绑定到该路由器才能收到消息,忽略Routing Key。<br>3、Topic Exchange：主题匹配订阅,这里的主题指的是RoutingKey,RoutingKey可以采用通配符,如:*或#，RoutingKey命名采用.来分隔多个词,只有消息这将队列绑定到该路由器且指定RoutingKey符合匹配规则时才能收到消息。<br>4、Headers Exchange:消息头订阅,消息发布前,为消息定义一个或多个键值对的消息头,然后消费者接收消息同时需要定义类似的键值对请求头:(如:x-mactch=all或者x_match=any)，只有请求头与消息头匹配,才能接收消息,忽略RoutingKey。<br>5、默认的exchange:如果用空字符串去声明一个exchange，那么系统就会使用”amq.direct”这个exchange，我们创建一个queue时,默认的都会有一个和新建queue同名的routingKey绑定到这个默认的exchange上去。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">channel.BasicPublish(&quot;&quot;, &quot;TaskQueue&quot;, properties, bytes);</span><br></pre></td></tr></table></figure></p>
 <p>因为在第一个参数选择了默认的exchange，而我们申明的队列叫TaskQueue，所以默认的，它在新建一个也叫TaskQueue的routingKey，并绑定在默认的exchange上，导致了我们可以在第二个参数routingKey中写TaskQueue，这样它就会找到定义的同名的queue，并把消息放进去。<br><strong>如果有两个接收程序都是用了同一个的queue和相同的routingKey去绑定direct exchange的话，分发的行为是负载均衡的，也就是说第一个是程序1收到，第二个是程序2收到，以此类推。<br>如果有两个接收程序用了各自的queue，但使用相同的routingKey去绑定direct exchange的话，分发的行为是复制的，也就是说每个程序都会收到这个消息的副本。行为相当于fanout类型的exchange。</strong></p>
 <h4 id="Bindings-绑定"><a href="#Bindings-绑定" class="headerlink" title="Bindings 绑定"></a>Bindings 绑定</h4><p>绑定其实就是关联了exchange和queue，或者这么说:queue对exchange的内容感兴趣,exchange要把它的Message deliver到queue。</p>
 <h4 id="Direct-exchange"><a href="#Direct-exchange" class="headerlink" title="Direct exchange"></a>Direct exchange</h4><p>Driect exchange的路由算法非常简单:通过bindingkey的完全匹配，可以用下图来说明。<br><img src="https://upload-images.jianshu.io/upload_images/9594901-1fbeaabc51a220bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Direct exchange"><br>Exchange和两个队列绑定在一起,Q1的bindingkey是orange，Q2的binding key是black和green.<br>当Producer publish key是orange时,exchange会把它放到Q1上,如果是black或green就会到Q2上,其余的Message被丢弃。</p>
@@ -639,11 +811,11 @@
 </ul>
 <h2 id="消息序列化"><a href="#消息序列化" class="headerlink" title="消息序列化"></a>消息序列化</h2><p>RabbitMQ使用ProtoBuf序列化消息,它可作为RabbitMQ的Message的数据格式进行传输,由于是结构化的数据,这样就极大的方便了Consumer的数据高效处理,当然也可以使用XML，与XML相比,ProtoBuf有以下优势:<br>1.简单<br>2.size小了3-10倍<br>3.速度快了20-100倍<br>4.易于编程<br>6.减少了语义的歧义。<br>ProtoBuf具有速度和空间的优势，使得它现在应用非常广泛。</p>
 <h2 id="maven依赖"><a href="#maven依赖" class="headerlink" title="maven依赖"></a>maven依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.rabbitmq<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>amqp-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.6.5<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-lang<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Hello-world【生产者】"><a href="#Hello-world【生产者】" class="headerlink" title="Hello world【生产者】"></a>Hello world【生产者】</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldProducer</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_NAME = <span class="string">"hello"</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        ConnectionFactory cf = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        <span class="comment">//rabbitmq监听IP</span></span><br><span class="line">        cf.setHost(<span class="string">"192.168.1.96"</span>);</span><br><span class="line">        <span class="comment">//rabbitmq默认监听端口，注意要记得开启端口</span></span><br><span class="line">        cf.setPort(<span class="number">5672</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置访问的用户</span></span><br><span class="line">        cf.setUsername(<span class="string">"test"</span>);</span><br><span class="line">        cf.setPassword(<span class="string">"test"</span>);</span><br><span class="line">        <span class="comment">//建立连接</span></span><br><span class="line">        Connection connection = cf.newConnection();</span><br><span class="line">        <span class="comment">// 从连接中创建通道</span></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 声明（创建）队列</span></span><br><span class="line"><span class="comment">         * 参数1：队列名称</span></span><br><span class="line"><span class="comment">         * 参数2：为true时server重启队列不会消失</span></span><br><span class="line"><span class="comment">         * 参数3：队列是否是独占的，如果为true只能被一个connection使用，其他连接建立时会抛出异常</span></span><br><span class="line"><span class="comment">         * 参数4：队列不再使用时是否自动删除（没有连接，并且没有未处理的消息)</span></span><br><span class="line"><span class="comment">         * 参数5：建立队列时的其他参数</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="comment">// 消息内容</span></span><br><span class="line">        String message = <span class="string">"Hello World!"</span>;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 向server发布一条消息</span></span><br><span class="line"><span class="comment">         * 参数1：exchange名字，若为空则使用默认的exchange</span></span><br><span class="line"><span class="comment">         * 参数2：routing key</span></span><br><span class="line"><span class="comment">         * 参数3：其他的属性</span></span><br><span class="line"><span class="comment">         * 参数4：消息体</span></span><br><span class="line"><span class="comment">         * RabbitMQ默认有一个exchange，叫default exchange，它用一个空字符串表示，它是direct exchange类型，</span></span><br><span class="line"><span class="comment">         * 任何发往这个exchange的消息都会被路由到routing key的名字对应的队列上，如果没有对应的队列，则消息会被丢弃</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="keyword">null</span>, message.getBytes());</span><br><span class="line">        System.out.println(<span class="string">" [生产者] Sent '"</span> + message + <span class="string">"'"</span>);</span><br><span class="line">        <span class="comment">//关闭通道和连接</span></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Hello-world【消费者】"><a href="#Hello-world【消费者】" class="headerlink" title="Hello world【消费者】"></a>Hello world【消费者】</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.QueueingConsumer;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.test.util.ConnectionUtil;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_NAME = <span class="string">"test_queue"</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        ConnectionFactory cf = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        <span class="comment">//rabbitmq监听IP</span></span><br><span class="line">        cf.setHost(<span class="string">"192.168.1.96"</span>);</span><br><span class="line">        <span class="comment">//rabbitmq默认监听端口，注意要记得开启端口</span></span><br><span class="line">        cf.setPort(<span class="number">5672</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置访问的用户</span></span><br><span class="line">        cf.setUsername(<span class="string">"test"</span>);</span><br><span class="line">        cf.setPassword(<span class="string">"test"</span>);</span><br><span class="line">        <span class="comment">//建立连接</span></span><br><span class="line">        Connection connection = cf.newConnection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从连接中创建通道</span></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 声明队列(如果你已经明确的知道有这个队列,那么下面这句代码可以注释掉,如果不注释掉的话,也可以理解为消费者必须监听一个队列,如果没有就创建一个)</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 定义队列的消费者</span></span><br><span class="line">        QueueingConsumer consumer = <span class="keyword">new</span> QueueingConsumer(channel);</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 监听队列</span></span><br><span class="line"><span class="comment">         * 参数1:队列名称</span></span><br><span class="line"><span class="comment">         * 参数2：是否发送ack包，不发送ack消息会持续在服务端保存，直到收到ack。  可以通过channel.basicAck手动回复ack</span></span><br><span class="line"><span class="comment">         * 参数3：消费者</span></span><br><span class="line"><span class="comment">         */</span> </span><br><span class="line">        channel.basicConsume(QUEUE_NAME, <span class="keyword">true</span>, consumer);</span><br><span class="line">        <span class="comment">// 获取消息</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            QueueingConsumer.Delivery delivery = consumer.nextDelivery();</span><br><span class="line">            String message = <span class="keyword">new</span> String(delivery.getBody());</span><br><span class="line">            System.out.println(<span class="string">" [消费者] Received '"</span> + message + <span class="string">"'"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Hello-world【生产者】"><a href="#Hello-world【生产者】" class="headerlink" title="Hello world【生产者】"></a>Hello world【生产者】</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldProducer</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_NAME = <span class="string">"test_queue"</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        ConnectionFactory cf = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        <span class="comment">//rabbitmq监听IP</span></span><br><span class="line">        cf.setHost(<span class="string">"10.8.3.200"</span>);</span><br><span class="line">        <span class="comment">//rabbitmq默认监听端口，注意要记得开启端口</span></span><br><span class="line">        cf.setPort(<span class="number">5672</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置访问的用户</span></span><br><span class="line">        cf.setUsername(<span class="string">"test"</span>);</span><br><span class="line">        cf.setPassword(<span class="string">"test"</span>);</span><br><span class="line">        <span class="comment">//建立连接</span></span><br><span class="line">        Connection connection = cf.newConnection();</span><br><span class="line">        <span class="comment">// 从连接中创建通道</span></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 声明（创建）队列</span></span><br><span class="line"><span class="comment">         * 参数1：队列名称</span></span><br><span class="line"><span class="comment">         * 参数2：为true时server重启队列不会消失</span></span><br><span class="line"><span class="comment">         * 参数3：队列是否是独占的，如果为true只能被一个connection使用，其他连接建立时会抛出异常</span></span><br><span class="line"><span class="comment">         * 参数4：队列不再使用时是否自动删除（没有连接，并且没有未处理的消息)</span></span><br><span class="line"><span class="comment">         * 参数5：建立队列时的其他参数</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line">        <span class="comment">// 消息内容</span></span><br><span class="line">        String message = <span class="string">"Hello World!"</span>;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 向server发布一条消息</span></span><br><span class="line"><span class="comment">         * 参数1：exchange名字，若为空则使用默认的exchange</span></span><br><span class="line"><span class="comment">         * 参数2：routing key</span></span><br><span class="line"><span class="comment">         * 参数3：其他的属性</span></span><br><span class="line"><span class="comment">         * 参数4：消息体</span></span><br><span class="line"><span class="comment">         * RabbitMQ默认有一个exchange，叫default exchange，它用一个空字符串表示，它是direct exchange类型，</span></span><br><span class="line"><span class="comment">         * 任何发往这个exchange的消息都会被路由到routing key的名字对应的队列上，如果没有对应的队列，则消息会被丢弃</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        channel.basicPublish(<span class="string">""</span>, QUEUE_NAME, <span class="keyword">null</span>, message.getBytes());</span><br><span class="line">        System.out.println(<span class="string">" [生产者] Sent '"</span> + message + <span class="string">"'"</span>);</span><br><span class="line">        <span class="comment">//关闭通道和连接</span></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Hello-world【消费者】"><a href="#Hello-world【消费者】" class="headerlink" title="Hello world【消费者】"></a>Hello world【消费者】</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.QueueingConsumer;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.test.util.ConnectionUtil;</span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>&#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String QUEUE_NAME = <span class="string">"test_queue"</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] argv)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        ConnectionFactory cf = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        <span class="comment">//rabbitmq监听IP</span></span><br><span class="line">        cf.setHost(<span class="string">"10.8.3.200"</span>);</span><br><span class="line">        <span class="comment">//rabbitmq默认监听端口，注意要记得开启端口</span></span><br><span class="line">        cf.setPort(<span class="number">5672</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//设置访问的用户</span></span><br><span class="line">        cf.setUsername(<span class="string">"test"</span>);</span><br><span class="line">        cf.setPassword(<span class="string">"test"</span>);</span><br><span class="line">        <span class="comment">//建立连接</span></span><br><span class="line">        Connection connection = cf.newConnection();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从连接中创建通道</span></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 声明队列(如果你已经明确的知道有这个队列,那么下面这句代码可以注释掉,如果不注释掉的话,也可以理解为消费者必须监听一个队列,如果没有就创建一个)</span></span><br><span class="line">        channel.queueDeclare(QUEUE_NAME, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 定义队列的消费者</span></span><br><span class="line">        QueueingConsumer consumer = <span class="keyword">new</span> QueueingConsumer(channel);</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 监听队列</span></span><br><span class="line"><span class="comment">         * 参数1:队列名称</span></span><br><span class="line"><span class="comment">         * 参数2：是否发送ack包，不发送ack消息会持续在服务端保存，直到收到ack。  可以通过channel.basicAck手动回复ack</span></span><br><span class="line"><span class="comment">         * 参数3：消费者</span></span><br><span class="line"><span class="comment">         */</span> </span><br><span class="line">        channel.basicConsume(QUEUE_NAME, <span class="keyword">true</span>, consumer);</span><br><span class="line">        <span class="comment">// 获取消息</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            QueueingConsumer.Delivery delivery = consumer.nextDelivery();</span><br><span class="line">            String message = <span class="keyword">new</span> String(delivery.getBody());</span><br><span class="line">            System.out.println(<span class="string">" [消费者] Received '"</span> + message + <span class="string">"'"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="发送一个对象"><a href="#发送一个对象" class="headerlink" title="发送一个对象"></a>发送一个对象</h2><p>我们想发送一个对象给接受者，首先需要新建一个对象，因为发送过程需要序列化，因此这里需要实现java.io.Serializable接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MessageInfo</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1L</span>;</span><br><span class="line">    <span class="comment">//渠道</span></span><br><span class="line">    <span class="keyword">private</span> String channel;</span><br><span class="line">    <span class="comment">//来源</span></span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getChannel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> channel;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setChannel</span><span class="params">(String channel)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.channel = channel;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getContent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> content;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setContent</span><span class="params">(String content)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.content = content;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>序列化分为两大部分：序列化和反序列化。序列化是这个过程的第一部分，将数据分解成字节流，以便存储在文件中或在网络上传输。反序列化就是打开字节流并重构对象。</p>
-<h2 id="接收者代码"><a href="#接收者代码" class="headerlink" title="接收者代码"></a>接收者代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang.SerializationUtils;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.AMQP.BasicProperties;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Envelope;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Consumer;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.ShutdownSignalException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receiver</span> <span class="keyword">extends</span> <span class="title">BaseConnector</span> <span class="keyword">implements</span> <span class="title">Runnable</span>, <span class="title">Consumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Receiver</span><span class="params">(String queueName)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(queueName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//实现Runnable的run方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            channel.basicConsume(queueName, <span class="keyword">true</span>,<span class="keyword">this</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 下面这些方法都是实现Consumer接口的</span></span><br><span class="line"><span class="comment">     **/</span>    </span><br><span class="line">    <span class="comment">//当消费者注册完成自动调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleConsumeOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Consumer "</span>+consumerTag +<span class="string">" registered"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当消费者接收到消息会自动调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleDelivery</span><span class="params">(String consumerTag, Envelope env,</span></span></span><br><span class="line"><span class="function"><span class="params">                BasicProperties props, <span class="keyword">byte</span>[] body)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        MessageInfo messageInfo = (MessageInfo)SerializationUtils.deserialize(body);</span><br><span class="line">        System.out.println(<span class="string">"Message ( "</span></span><br><span class="line">                + <span class="string">"channel : "</span> + messageInfo.getChannel() </span><br><span class="line">                + <span class="string">" , content : "</span> + messageInfo.getContent() </span><br><span class="line">                + <span class="string">" ) received."</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//下面这些方法可以暂时不用理会</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleCancelOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleCancel</span><span class="params">(String consumerTag)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleShutdownSignal</span><span class="params">(String consumerTag,</span></span></span><br><span class="line"><span class="function"><span class="params">            ShutdownSignalException sig)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRecoverOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="接收者代码"><a href="#接收者代码" class="headerlink" title="接收者代码"></a>接收者代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.lang.SerializationUtils;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.AMQP.BasicProperties;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Envelope;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.Consumer;</span><br><span class="line"><span class="keyword">import</span> com.rabbitmq.client.ShutdownSignalException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Receiver</span> <span class="keyword">extends</span> <span class="title">BaseConnector</span> <span class="keyword">implements</span> <span class="title">Runnable</span>, <span class="title">Consumer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Receiver</span><span class="params">(String queueName)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(queueName);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//实现Runnable的run方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         <span class="keyword">try</span> &#123;</span><br><span class="line">            channel.basicConsume(queueName, <span class="keyword">true</span>,<span class="keyword">this</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 下面这些方法都是实现Consumer接口的</span></span><br><span class="line"><span class="comment">     **/</span>    </span><br><span class="line">    <span class="comment">//当消费者注册完成自动调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleConsumeOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Consumer "</span>+consumerTag +<span class="string">" registered"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当消费者接收到消息会自动调用</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleDelivery</span><span class="params">(String consumerTag, Envelope env,</span></span></span><br><span class="line"><span class="function"><span class="params">                BasicProperties props, <span class="keyword">byte</span>[] body)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        MessageInfo messageInfo = (MessageInfo)SerializationUtils.deserialize(body);</span><br><span class="line">        System.out.println(<span class="string">"Message ( "</span></span><br><span class="line">                + <span class="string">"channel : "</span> + messageInfo.getChannel() </span><br><span class="line">                + <span class="string">" , content : "</span> + messageInfo.getContent() </span><br><span class="line">                + <span class="string">" ) received."</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//下面这些方法可以暂时不用理会</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleCancelOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleCancel</span><span class="params">(String consumerTag)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleShutdownSignal</span><span class="params">(String consumerTag,</span></span></span><br><span class="line"><span class="function"><span class="params">            ShutdownSignalException sig)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleRecoverOk</span><span class="params">(String consumerTag)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseConnector</span> </span>&#123;</span><br><span class="line">    <span class="comment">//建立连接</span></span><br><span class="line">    <span class="keyword">protected</span> Connection connection = <span class="keyword">null</span>;</span><br><span class="line">    <span class="comment">// 从连接中创建通道</span></span><br><span class="line">    <span class="keyword">protected</span> Channel channel = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BaseConnector</span><span class="params">(String queueName)</span> </span>&#123;</span><br><span class="line">        ConnectionFactory cf = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        <span class="comment">//rabbitmq监听IP</span></span><br><span class="line">        cf.setHost(<span class="string">"10.8.3.200"</span>);</span><br><span class="line">        <span class="comment">//rabbitmq默认监听端口，注意要记得开启端口</span></span><br><span class="line">        cf.setPort(<span class="number">5672</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置访问的用户</span></span><br><span class="line">        cf.setUsername(<span class="string">"test"</span>);</span><br><span class="line">        cf.setPassword(<span class="string">"test"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            connection = cf.newConnection();</span><br><span class="line">            <span class="comment">// 从连接中创建通道</span></span><br><span class="line">            channel = connection.createChannel();</span><br><span class="line">            <span class="comment">/*</span></span><br><span class="line"><span class="comment">             * 声明（创建）队列</span></span><br><span class="line"><span class="comment">             * 参数1：队列名称</span></span><br><span class="line"><span class="comment">             * 参数2：为true时server重启队列不会消失</span></span><br><span class="line"><span class="comment">             * 参数3：队列是否是独占的，如果为true只能被一个connection使用，其他连接建立时会抛出异常</span></span><br><span class="line"><span class="comment">             * 参数4：队列不再使用时是否自动删除（没有连接，并且没有未处理的消息)</span></span><br><span class="line"><span class="comment">             * 参数5：建立队列时的其他参数</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            channel.queueDeclare(queueName, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">false</span>, <span class="keyword">null</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (TimeoutException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>实现Runnable接口的目的是为了实现多线程。</p>
 <h2 id="Spring整合"><a href="#Spring整合" class="headerlink" title="Spring整合"></a>Spring整合</h2><h3 id="maven依赖："><a href="#maven依赖：" class="headerlink" title="maven依赖："></a>maven依赖：</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.amqp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-rabbit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.6.1.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>spring-rabbit主要API有：<br>MessageListenerContainer：监听容器，为消息入队提供异步处理<br>RabbitTemplate ：用来发送和接收消息<br>RabbitAdmin ：声明队列、交换器（Exchange）、绑定（Binding）    </p>
@@ -719,11 +891,182 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/06/25/RabbitMQ安装/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Charlo">
+      <meta itemprop="description" content="一点一滴的记录">
+      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只不正经的小程序猿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/06/25/RabbitMQ安装/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">RabbitMQ安装</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-14 11:49:26" itemprop="dateModified" datetime="2019-01-14T11:49:26+08:00">2019-01-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="RabbitMQ官方介绍："><a href="#RabbitMQ官方介绍：" class="headerlink" title="RabbitMQ官方介绍："></a>RabbitMQ官方介绍：</h2><blockquote>
+<p>RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that Mr. or Ms. Mailperson will eventually deliver the mail to your recipient. In this analogy, RabbitMQ is a post box, a post office and a postman.<br>The major difference between RabbitMQ and the post office is that it doesn’t deal with paper, instead it accepts, stores and forwards binary blobs of data ‒ messages.<br>翻译：<br>RabbitMQ 是一个消息代理: 它接受和转发消息。你可以把它想成邮局: 当你把你想要投递的信件放入邮箱, 你可以确信邮递员最终会将邮件传递给你的收件人。在这个比喻中, RabbitMQ 是一个邮箱, 一个邮局和一个邮递员。<br>RabbitMQ 和邮局的主要区别在于它不处理纸面文件, 而是接受、存储和转发二进制的消息数据。</p>
+</blockquote>
+<h3 id="RabbitMQ安装："><a href="#RabbitMQ安装：" class="headerlink" title="RabbitMQ安装："></a>RabbitMQ安装：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">添加源：</span><br><span class="line">echo &apos;deb http://www.rabbitmq.com/debian/ testing main&apos; | sudo tee /etc/apt/sources.list.d/rabbitmq.list</span><br><span class="line">添加公钥：</span><br><span class="line">wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install rabbitmq-server</span><br></pre></td></tr></table></figure>
+<p>看看是不是有rabbitmq的进程：<code>pgrep -l rabbit</code>，看到有rabbit的进程则表示安装成功。<br>程序连接服务的端口是：5672<br>远程访问rabbitmq【浏览器管理rabbitmq】：localhost:15672或者ip:15672</p>
+<h3 id="不能远程怎么办？"><a href="#不能远程怎么办？" class="headerlink" title="不能远程怎么办？"></a>不能远程怎么办？</h3><p>答案是需要开启权限，默认是不能远程访问的</p>
+<blockquote>
+<p>在<code>/etc/rabbitmq</code>下新增rabbitmq.config文件， 输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[  </span><br><span class="line">&#123;rabbit, [&#123;tcp_listeners, [5672]&#125;, &#123;loopback_users, [&quot;username&quot;]&#125;]&#125;  </span><br><span class="line">].</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>然后授权：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/lib/rabbitmq/bin/</span><br><span class="line">sudo rabbitmqctl add_user username password</span><br><span class="line">sudo rabbitmqctl set_user_tags username administrator</span><br><span class="line">sudo rabbitmqctl set_permissions -p / username &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>之后重启服务就可以了。</p>
+</blockquote>
+<h3 id="rabbitmq基本操作："><a href="#rabbitmq基本操作：" class="headerlink" title="rabbitmq基本操作："></a>rabbitmq基本操作：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service rabbitmq-server start      # 启动</span><br><span class="line">service rabbitmq-server stop      # 停止</span><br><span class="line">service rabbitmq-server restart      # 重启</span><br></pre></td></tr></table></figure>
+<h3 id="开启web界面管理工具"><a href="#开启web界面管理工具" class="headerlink" title="开启web界面管理工具"></a>开启web界面管理工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">service rabbitmq-server restart</span><br></pre></td></tr></table></figure>
+<h3 id="相关问题解决"><a href="#相关问题解决" class="headerlink" title="相关问题解决"></a>相关问题解决</h3><p>无法启动的问题：<br>1、如果是非admin用户，可能因为文件或文件夹的权限问题，导致无法启动。此时可以换到root账户，或者：<br>    将/etc下rabbitmq目录的所有者改为当前用户：<code>sudo chmod -R abcdef:abcdef ./rabbitmq</code><br>2、如果提示缺少文件enabled_plugins。在/etc/rabbitmq下创建enabled_plugins文件即可。当前用户的权限即可。    </p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -881,7 +1224,7 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -939,7 +1282,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-19 23:40:38" itemprop="dateModified" datetime="2018-11-19T23:40:38+08:00">2018-11-19</time>
+                <time title="修改时间：2019-02-18 23:27:24" itemprop="dateModified" datetime="2019-02-18T23:27:24+08:00">2019-02-18</time>
               
             
           </span>
@@ -977,21 +1320,21 @@
             <p>转载自：<a href="http://www.cnblogs.com/skywang12345/p/3711483.html" target="_blank" rel="noopener">http://www.cnblogs.com/skywang12345/p/3711483.html</a></p>
 <h2 id="深度优先搜索"><a href="#深度优先搜索" class="headerlink" title="深度优先搜索"></a>深度优先搜索</h2><h3 id="1、深度优先搜索介绍"><a href="#1、深度优先搜索介绍" class="headerlink" title="1、深度优先搜索介绍"></a>1、深度优先搜索介绍</h3><p>图的深度优先搜索(Depth First Search)，和树的先序遍历比较类似。<br>它的思想：假设初始状态是图中所有顶点均未被访问，则从某个顶点v出发，首先访问该顶点，然后依次从它的各个未被访问的邻接点出发深度优先搜索遍历图，直至图中所有和v有路径相通的顶点都被访问到。若此时尚有其他顶点未被访问到，则另选一个未被访问的顶点作起始点，重复上述过程，直至图中所有顶点都被访问到为止。<br>显然，深度优先搜索是一个递归的过程。</p>
 <h3 id="2、深度优先搜索图解"><a href="#2、深度优先搜索图解" class="headerlink" title="2、深度优先搜索图解"></a>2、深度优先搜索图解</h3><h4 id="2-1-无向图的深度优先搜索"><a href="#2-1-无向图的深度优先搜索" class="headerlink" title="2.1 无向图的深度优先搜索"></a>2.1 无向图的深度优先搜索</h4><p>下面以”无向图”为例，来对深度优先搜索进行演示。 </p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-01.jpg" alt=""> </p>
+<p><img src="https://i.postimg.cc/Z58zpTxm/201707262146-01.jpg" alt=""> </p>
 <p>对上面的图G1进行深度优先遍历，从顶点A开始。   </p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-02.jpg" alt="">   </p>
+<p><img src="https://i.postimg.cc/K8DvF7Vt/201707262146-02.jpg" alt="">   </p>
 <p><strong>第1步</strong>：访问A。<br><strong>第2步</strong>：访问(A的邻接点)C。<br>　　在第1步访问A之后，接下来应该访问的是A的邻接点，即”C,D,F”中的一个。但在本文的实现中，顶点ABCDEFG是按照顺序存储，C在”D和F”的前面，因此，先访问C。<br><strong>第3步</strong>：访问(C的邻接点)B。<br>　　在第2步访问C之后，接下来应该访问C的邻接点，即”B和D”中一个(A已经被访问过，就不算在内)。而由于B在D之前，先访问B。<br><strong>第4步</strong>：访问(C的邻接点)D。<br>　　在第3步访问了C的邻接点B之后，B没有未被访问的邻接点；因此，返回到访问C的另一个邻接点D。<br><strong>第5步</strong>：访问(A的邻接点)F。<br>　　前面已经访问了A，并且访问完了”A的邻接点B的所有邻接点(包括递归的邻接点在内)”；因此，此时返回到访问A的另一个邻接点F。<br><strong>第6步</strong>：访问(F的邻接点)G。<br><strong>第7步</strong>：访问(G的邻接点)E。<br>因此访问顺序是：<strong>A -&gt; C -&gt; B -&gt; D -&gt; F -&gt; G -&gt; E</strong>   </p>
 <h4 id="2-2-有向图的深度优先搜索"><a href="#2-2-有向图的深度优先搜索" class="headerlink" title="2.2 有向图的深度优先搜索"></a>2.2 有向图的深度优先搜索</h4><p>下面以”有向图”为例，来对深度优先搜索进行演示。   </p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-03.jpg" alt=""> </p>
+<p><img src="https://i.postimg.cc/KjPCLftN/201707262146-03.jpg" alt=""> </p>
 <p>对上面的图G2进行深度优先遍历，从顶点A开始。   </p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-04.jpg" alt="">   </p>
+<p><img src="https://i.postimg.cc/Qdxv9pCQ/201707262146-04.jpg" alt="">   </p>
 <p><strong>第1步</strong>：访问A。<br><strong>第2步</strong>：访问B。<br>　　在访问了A之后，接下来应该访问的是A的出边的另一个顶点，即顶点B。<br><strong>第3步</strong>：访问C。<br>　　在访问了B之后，接下来应该访问的是B的出边的另一个顶点，即顶点C,E,F。在本文实现的图中，顶点ABCDEFG按照顺序存储，因此先访问C。<br><strong>第4步</strong>：访问E。<br>　　接下来访问C的出边的另一个顶点，即顶点E。<br><strong>第5步</strong>：访问D。<br>　　接下来访问E的出边的另一个顶点，即顶点B,D。顶点B已经被访问过，因此访问顶点D。<br><strong>第6步</strong>：访问F。<br>　　接下应该回溯”访问A的出边的另一个顶点F”。<br><strong>第7步</strong>：访问G。<br>因此访问顺序是：<strong>A -&gt; B -&gt; C -&gt; E -&gt; D -&gt; F -&gt; G</strong> </p>
 <h2 id="广度优先搜索"><a href="#广度优先搜索" class="headerlink" title="广度优先搜索"></a>广度优先搜索</h2><h3 id="1、广度优先搜索介绍"><a href="#1、广度优先搜索介绍" class="headerlink" title="1、广度优先搜索介绍"></a>1、广度优先搜索介绍</h3><p>广度优先搜索算法(Breadth First Search)，又称为”宽度优先搜索”或”横向优先搜索”，简称BFS。<br>它的思想是：从图中某顶点v出发，在访问了v之后依次访问v的各个未曾访问过的邻接点，然后分别从这些邻接点出发依次访问它们的邻接点，并使得“先被访问的顶点的邻接点先于后被访问的顶点的邻接点被访问，直至图中所有已被访问的顶点的邻接点都被访问到。如果此时图中尚有顶点未被访问，则需要另选一个未曾被访问过的顶点作为新的起始点，重复上述过程，直至图中所有顶点都被访问到为止。<br>换句话说，广度优先搜索遍历图的过程是以v为起点，由近至远，依次访问和v有路径相通且路径长度为1,2…的顶点。   </p>
 <h3 id="2、广度优先搜索图解"><a href="#2、广度优先搜索图解" class="headerlink" title="2、广度优先搜索图解"></a>2、广度优先搜索图解</h3><h4 id="2-1-无向图的广度优先搜索"><a href="#2-1-无向图的广度优先搜索" class="headerlink" title="2.1 无向图的广度优先搜索"></a>2.1 无向图的广度优先搜索</h4><p>下面以”无向图”为例，来对广度优先搜索进行演示。还是以上面的图G1为例进行说明。</p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-05.jpg" alt="">   </p>
+<p><img src="https://i.postimg.cc/t4SwhYnL/201707262146-05.jpg" alt="">   </p>
 <p><strong>第1步</strong>：访问A。<br><strong>第2步</strong>：依次访问C,D,F。<br>　　在访问了A之后，接下来访问A的邻接点。前面已经说过，在本文实现中，顶点ABCDEFG按照顺序存储的，C在”D和F”的前面，因此，先访问C。再访问完C之后，再依次访问D,F。<br><strong>第3步</strong>：依次访问B,G。<br>　　在第2步访问完C,D,F之后，再依次访问它们的邻接点。首先访问C的邻接点B，再访问F的邻接点G。<br><strong>第4步</strong>：访问E。<br>　　在第3步访问完B,G之后，再依次访问它们的邻接点。只有G有邻接点E，因此访问G的邻接点E。<br>因此访问顺序是：<strong>A -&gt; C -&gt; D -&gt; F -&gt; B -&gt; G -&gt; E</strong>   </p>
 <h4 id="2-2-有向图的广度优先搜索"><a href="#2-2-有向图的广度优先搜索" class="headerlink" title="2.2 有向图的广度优先搜索"></a>2.2 有向图的广度优先搜索</h4><p>下面以”有向图”为例，来对广度优先搜索进行演示。还是以上面的图G2为例进行说明。   </p>
-<p><img src="https://charlo.bitcron.com/_images/201707262146-06.jpg" alt="">   </p>
+<p><img src="https://i.postimg.cc/zGV0Yp3c/201707262146-06.jpg" alt="">   </p>
 <p><strong>第1步</strong>：访问A。<br><strong>第2步</strong>：访问B。<br><strong>第3步</strong>：依次访问C,E,F。<br>　　在访问了B之后，接下来访问B的出边的另一个顶点，即C,E,F。前面已经说过，在本文实现中，顶点ABCDEFG按照顺序存储的，因此会先访问C，再依次访问E,F。<br><strong>第4步</strong>：依次访问D,G。<br>　　在访问完C,E,F之后，再依次访问它们的出边的另一个顶点。还是按照C,E,F的顺序访问，C的已经全部访问过了，那么就只剩下E,F；先访问E的邻接点D，再访问F的邻接点G。<br>因此访问顺序是：<strong>A -&gt; B -&gt; C -&gt; E -&gt; F -&gt; D -&gt; G</strong>   </p>
 <h3 id="搜索算法的源码"><a href="#搜索算法的源码" class="headerlink" title="搜索算法的源码"></a>搜索算法的源码</h3><h5 id="邻接矩阵实现的无向图"><a href="#邻接矩阵实现的无向图" class="headerlink" title="邻接矩阵实现的无向图"></a>邻接矩阵实现的无向图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Java: 邻接矩阵表示的"无向图(Matrix Undirected Graph)"</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> skywang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2014/04/19</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MatrixUDG</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span>[] mVexs;       <span class="comment">// 顶点集合</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][] mMatrix;    <span class="comment">// 邻接矩阵</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">     * 创建图(自己输入数据)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MatrixUDG</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 输入"顶点数"和"边数"</span></span><br><span class="line">        System.out.printf(<span class="string">"input vertex number: "</span>);</span><br><span class="line">        <span class="keyword">int</span> vlen = readInt();</span><br><span class="line">        System.out.printf(<span class="string">"input edge number: "</span>);</span><br><span class="line">        <span class="keyword">int</span> elen = readInt();</span><br><span class="line">        <span class="keyword">if</span> ( vlen &lt; <span class="number">1</span> || elen &lt; <span class="number">1</span> || (elen &gt; (vlen*(vlen - <span class="number">1</span>)))) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"input error: invalid parameters!\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化"顶点"</span></span><br><span class="line">        mVexs = <span class="keyword">new</span> <span class="keyword">char</span>[vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"vertex(%d): "</span>, i);</span><br><span class="line">            mVexs[i] = readChar();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"边"</span></span><br><span class="line">        mMatrix = <span class="keyword">new</span> <span class="keyword">int</span>[vlen][vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elen; i++) &#123;</span><br><span class="line">            <span class="comment">// 读取边的起始顶点和结束顶点</span></span><br><span class="line">            System.out.printf(<span class="string">"edge(%d):"</span>, i);</span><br><span class="line">            <span class="keyword">char</span> c1 = readChar();</span><br><span class="line">            <span class="keyword">char</span> c2 = readChar();</span><br><span class="line">            <span class="keyword">int</span> p1 = getPosition(c1);</span><br><span class="line">            <span class="keyword">int</span> p2 = getPosition(c2);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (p1==-<span class="number">1</span> || p2==-<span class="number">1</span>) &#123;</span><br><span class="line">                System.out.printf(<span class="string">"input error: invalid edge!\n"</span>);</span><br><span class="line">                <span class="keyword">return</span> ;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            mMatrix[p1][p2] = <span class="number">1</span>;</span><br><span class="line">            mMatrix[p2][p1] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 创建图(用已提供的矩阵)</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 参数说明：</span></span><br><span class="line"><span class="comment">     *     vexs  -- 顶点数组</span></span><br><span class="line"><span class="comment">     *     edges -- 边数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MatrixUDG</span><span class="params">(<span class="keyword">char</span>[] vexs, <span class="keyword">char</span>[][] edges)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化"顶点数"和"边数"</span></span><br><span class="line">        <span class="keyword">int</span> vlen = vexs.length;</span><br><span class="line">        <span class="keyword">int</span> elen = edges.length;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"顶点"</span></span><br><span class="line">        mVexs = <span class="keyword">new</span> <span class="keyword">char</span>[vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            mVexs[i] = vexs[i];</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"边"</span></span><br><span class="line">        mMatrix = <span class="keyword">new</span> <span class="keyword">int</span>[vlen][vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elen; i++) &#123;</span><br><span class="line">            <span class="comment">// 读取边的起始顶点和结束顶点</span></span><br><span class="line">            <span class="keyword">int</span> p1 = getPosition(edges[i][<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">int</span> p2 = getPosition(edges[i][<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">            mMatrix[p1][p2] = <span class="number">1</span>;</span><br><span class="line">            mMatrix[p2][p1] = <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 返回ch位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getPosition</span><span class="params">(<span class="keyword">char</span> ch)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;mVexs.length; i++)</span><br><span class="line">            <span class="keyword">if</span>(mVexs[i]==ch)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 读取一个输入字符</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">char</span> <span class="title">readChar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> ch=<span class="string">'0'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ch = (<span class="keyword">char</span>)System.in.read();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">while</span>(!((ch&gt;=<span class="string">'a'</span>&amp;&amp;ch&lt;=<span class="string">'z'</span>) || (ch&gt;=<span class="string">'A'</span>&amp;&amp;ch&lt;=<span class="string">'Z'</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ch;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 读取一个输入字符</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">readInt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">return</span> scanner.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 返回顶点v的第一个邻接顶点的索引，失败则返回-1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">firstVertex</span><span class="params">(<span class="keyword">int</span> v)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (v&lt;<span class="number">0</span> || v&gt;(mVexs.length-<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            <span class="keyword">if</span> (mMatrix[v][i] == <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 返回顶点v相对于w的下一个邻接顶点的索引，失败则返回-1</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">nextVertex</span><span class="params">(<span class="keyword">int</span> v, <span class="keyword">int</span> w)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (v&lt;<span class="number">0</span> || v&gt;(mVexs.length-<span class="number">1</span>) || w&lt;<span class="number">0</span> || w&gt;(mVexs.length-<span class="number">1</span>))</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = w + <span class="number">1</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            <span class="keyword">if</span> (mMatrix[v][i] == <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 深度优先搜索遍历图的递归实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">boolean</span>[] visited)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        visited[i] = <span class="keyword">true</span>;</span><br><span class="line">        System.out.printf(<span class="string">"%c "</span>, mVexs[i]);</span><br><span class="line">        <span class="comment">// 遍历该顶点的所有邻接顶点。若是没有访问过，那么继续往下走</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> w = firstVertex(i); w &gt;= <span class="number">0</span>; w = nextVertex(i, w)) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[w])</span><br><span class="line">                DFS(w, visited);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 深度优先搜索遍历图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[mVexs.length];       <span class="comment">// 顶点访问标记</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化所有顶点都没有被访问</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            visited[i] = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">"DFS: "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[i])</span><br><span class="line">                DFS(i, visited);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 广度优先搜索（类似于树的层次遍历）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] queue = <span class="keyword">new</span> <span class="keyword">int</span>[mVexs.length];            <span class="comment">// 辅组队列</span></span><br><span class="line">        <span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[mVexs.length];  <span class="comment">// 顶点访问标记</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            visited[i] = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">"BFS: "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[i]) &#123;</span><br><span class="line">                visited[i] = <span class="keyword">true</span>;</span><br><span class="line">                System.out.printf(<span class="string">"%c "</span>, mVexs[i]);</span><br><span class="line">                queue[rear++] = i;  <span class="comment">// 入队列</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">                <span class="keyword">int</span> j = queue[head++];  <span class="comment">// 出队列</span></span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = firstVertex(j); k &gt;= <span class="number">0</span>; k = nextVertex(j, k)) &#123; <span class="comment">//k是为访问的邻接顶点</span></span><br><span class="line">                    <span class="keyword">if</span> (!visited[k]) &#123;</span><br><span class="line">                        visited[k] = <span class="keyword">true</span>;</span><br><span class="line">                        System.out.printf(<span class="string">"%c "</span>, mVexs[k]);</span><br><span class="line">                        queue[rear++] = k;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 打印矩阵队列图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.printf(<span class="string">"Martix Graph:\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; mVexs.length; j++)</span><br><span class="line">                System.out.printf(<span class="string">"%d "</span>, mMatrix[i][j]);</span><br><span class="line">            System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] vexs = &#123;<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>&#125;;</span><br><span class="line">        <span class="keyword">char</span>[][] edges = <span class="keyword">new</span> <span class="keyword">char</span>[][]&#123;</span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'C'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'D'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'F'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'B'</span>, <span class="string">'C'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'C'</span>, <span class="string">'D'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'E'</span>, <span class="string">'G'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'F'</span>, <span class="string">'G'</span>&#125;&#125;;</span><br><span class="line">        MatrixUDG pG;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 自定义"图"(输入矩阵队列)</span></span><br><span class="line">        <span class="comment">//pG = new MatrixUDG();</span></span><br><span class="line">        <span class="comment">// 采用已有的"图"</span></span><br><span class="line">        pG = <span class="keyword">new</span> MatrixUDG(vexs, edges);</span><br><span class="line"></span><br><span class="line">        pG.print();   <span class="comment">// 打印图</span></span><br><span class="line">        pG.DFS();     <span class="comment">// 深度优先遍历</span></span><br><span class="line">        pG.BFS();     <span class="comment">// 广度优先遍历</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="邻接表实现的无向图"><a href="#邻接表实现的无向图" class="headerlink" title="邻接表实现的无向图"></a>邻接表实现的无向图</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Java: 邻接表表示的"无向图(List Undirected Graph)"</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> skywang</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2014/04/19</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListUDG</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 邻接表中表对应的链表的顶点</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ENode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> ivex;       <span class="comment">// 该边所指向的顶点的位置</span></span><br><span class="line">        ENode nextEdge; <span class="comment">// 指向下一条弧的指针</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 邻接表中表的顶点</span></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">VNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> data;          <span class="comment">// 顶点信息</span></span><br><span class="line">        ENode firstEdge;    <span class="comment">// 指向第一条依附该顶点的弧</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> VNode[] mVexs;  <span class="comment">// 顶点数组</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">     * 创建图(自己输入数据)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ListUDG</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 输入"顶点数"和"边数"</span></span><br><span class="line">        System.out.printf(<span class="string">"input vertex number: "</span>);</span><br><span class="line">        <span class="keyword">int</span> vlen = readInt();</span><br><span class="line">        System.out.printf(<span class="string">"input edge number: "</span>);</span><br><span class="line">        <span class="keyword">int</span> elen = readInt();</span><br><span class="line">        <span class="keyword">if</span> ( vlen &lt; <span class="number">1</span> || elen &lt; <span class="number">1</span> || (elen &gt; (vlen*(vlen - <span class="number">1</span>)))) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"input error: invalid parameters!\n"</span>);</span><br><span class="line">            <span class="keyword">return</span> ;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化"顶点"</span></span><br><span class="line">        mVexs = <span class="keyword">new</span> VNode[vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"vertex(%d): "</span>, i);</span><br><span class="line">            mVexs[i] = <span class="keyword">new</span> VNode();</span><br><span class="line">            mVexs[i].data = readChar();</span><br><span class="line">            mVexs[i].firstEdge = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"边"</span></span><br><span class="line">        <span class="comment">//mMatrix = new int[vlen][vlen];</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elen; i++) &#123;</span><br><span class="line">            <span class="comment">// 读取边的起始顶点和结束顶点</span></span><br><span class="line">            System.out.printf(<span class="string">"edge(%d):"</span>, i);</span><br><span class="line">            <span class="keyword">char</span> c1 = readChar();</span><br><span class="line">            <span class="keyword">char</span> c2 = readChar();</span><br><span class="line">            <span class="keyword">int</span> p1 = getPosition(c1);</span><br><span class="line">            <span class="keyword">int</span> p2 = getPosition(c2);</span><br><span class="line">            <span class="comment">// 初始化node1</span></span><br><span class="line">            ENode node1 = <span class="keyword">new</span> ENode();</span><br><span class="line">            node1.ivex = p2;</span><br><span class="line">            <span class="comment">// 将node1链接到"p1所在链表的末尾"</span></span><br><span class="line">            <span class="keyword">if</span>(mVexs[p1].firstEdge == <span class="keyword">null</span>)</span><br><span class="line">              mVexs[p1].firstEdge = node1;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                linkLast(mVexs[p1].firstEdge, node1);</span><br><span class="line">            <span class="comment">// 初始化node2</span></span><br><span class="line">            ENode node2 = <span class="keyword">new</span> ENode();</span><br><span class="line">            node2.ivex = p1;</span><br><span class="line">            <span class="comment">// 将node2链接到"p2所在链表的末尾"</span></span><br><span class="line">            <span class="keyword">if</span>(mVexs[p2].firstEdge == <span class="keyword">null</span>)</span><br><span class="line">              mVexs[p2].firstEdge = node2;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                linkLast(mVexs[p2].firstEdge, node2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 创建图(用已提供的矩阵)</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * 参数说明：</span></span><br><span class="line"><span class="comment">     *     vexs  -- 顶点数组</span></span><br><span class="line"><span class="comment">     *     edges -- 边数组</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ListUDG</span><span class="params">(<span class="keyword">char</span>[] vexs, <span class="keyword">char</span>[][] edges)</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化"顶点数"和"边数"</span></span><br><span class="line">        <span class="keyword">int</span> vlen = vexs.length;</span><br><span class="line">        <span class="keyword">int</span> elen = edges.length;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"顶点"</span></span><br><span class="line">        mVexs = <span class="keyword">new</span> VNode[vlen];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            mVexs[i] = <span class="keyword">new</span> VNode();</span><br><span class="line">            mVexs[i].data = vexs[i];</span><br><span class="line">            mVexs[i].firstEdge = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化"边"</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; elen; i++) &#123;</span><br><span class="line">            <span class="comment">// 读取边的起始顶点和结束顶点</span></span><br><span class="line">            <span class="keyword">char</span> c1 = edges[i][<span class="number">0</span>];</span><br><span class="line">            <span class="keyword">char</span> c2 = edges[i][<span class="number">1</span>];</span><br><span class="line">            <span class="comment">// 读取边的起始顶点和结束顶点</span></span><br><span class="line">            <span class="keyword">int</span> p1 = getPosition(edges[i][<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">int</span> p2 = getPosition(edges[i][<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 初始化node1</span></span><br><span class="line">            ENode node1 = <span class="keyword">new</span> ENode();</span><br><span class="line">            node1.ivex = p2;</span><br><span class="line">            <span class="comment">// 将node1链接到"p1所在链表的末尾"</span></span><br><span class="line">            <span class="keyword">if</span>(mVexs[p1].firstEdge == <span class="keyword">null</span>)</span><br><span class="line">              mVexs[p1].firstEdge = node1;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                linkLast(mVexs[p1].firstEdge, node1);</span><br><span class="line">            <span class="comment">// 初始化node2</span></span><br><span class="line">            ENode node2 = <span class="keyword">new</span> ENode();</span><br><span class="line">            node2.ivex = p1;</span><br><span class="line">            <span class="comment">// 将node2链接到"p2所在链表的末尾"</span></span><br><span class="line">            <span class="keyword">if</span>(mVexs[p2].firstEdge == <span class="keyword">null</span>)</span><br><span class="line">              mVexs[p2].firstEdge = node2;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                linkLast(mVexs[p2].firstEdge, node2);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 将node节点链接到list的最后</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">linkLast</span><span class="params">(ENode list, ENode node)</span> </span>&#123;</span><br><span class="line">        ENode p = list;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(p.nextEdge!=<span class="keyword">null</span>)</span><br><span class="line">            p = p.nextEdge;</span><br><span class="line">        p.nextEdge = node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 返回ch位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getPosition</span><span class="params">(<span class="keyword">char</span> ch)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;mVexs.length; i++)</span><br><span class="line">            <span class="keyword">if</span>(mVexs[i].data==ch)</span><br><span class="line">                <span class="keyword">return</span> i;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 读取一个输入字符</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">char</span> <span class="title">readChar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> ch=<span class="string">'0'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ch = (<span class="keyword">char</span>)System.in.read();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">while</span>(!((ch&gt;=<span class="string">'a'</span>&amp;&amp;ch&lt;=<span class="string">'z'</span>) || (ch&gt;=<span class="string">'A'</span>&amp;&amp;ch&lt;=<span class="string">'Z'</span>)));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> ch;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 读取一个输入字符</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">readInt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Scanner scanner = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        <span class="keyword">return</span> scanner.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 深度优先搜索遍历图的递归实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">boolean</span>[] visited)</span> </span>&#123;</span><br><span class="line">        ENode node;</span><br><span class="line"></span><br><span class="line">        visited[i] = <span class="keyword">true</span>;</span><br><span class="line">        System.out.printf(<span class="string">"%c "</span>, mVexs[i].data);</span><br><span class="line">        node = mVexs[i].firstEdge;</span><br><span class="line">        <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[node.ivex])</span><br><span class="line">                DFS(node.ivex, visited);</span><br><span class="line">            node = node.nextEdge;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 深度优先搜索遍历图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">DFS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[mVexs.length];       <span class="comment">// 顶点访问标记</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 初始化所有顶点都没有被访问</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            visited[i] = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">"DFS: "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[i])</span><br><span class="line">                DFS(i, visited);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 广度优先搜索（类似于树的层次遍历）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">BFS</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> head = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> rear = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] queue = <span class="keyword">new</span> <span class="keyword">int</span>[mVexs.length];            <span class="comment">// 辅组队列</span></span><br><span class="line">        <span class="keyword">boolean</span>[] visited = <span class="keyword">new</span> <span class="keyword">boolean</span>[mVexs.length];  <span class="comment">// 顶点访问标记</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++)</span><br><span class="line">            visited[i] = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">        System.out.printf(<span class="string">"BFS: "</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!visited[i]) &#123;</span><br><span class="line">                visited[i] = <span class="keyword">true</span>;</span><br><span class="line">                System.out.printf(<span class="string">"%c "</span>, mVexs[i].data);</span><br><span class="line">                queue[rear++] = i;  <span class="comment">// 入队列</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span> (head != rear) &#123;</span><br><span class="line">                <span class="keyword">int</span> j = queue[head++];  <span class="comment">// 出队列</span></span><br><span class="line">                ENode node = mVexs[j].firstEdge;</span><br><span class="line">                <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> k = node.ivex;</span><br><span class="line">                    <span class="keyword">if</span> (!visited[k])</span><br><span class="line">                    &#123;</span><br><span class="line">                        visited[k] = <span class="keyword">true</span>;</span><br><span class="line">                        System.out.printf(<span class="string">"%c "</span>, mVexs[k].data);</span><br><span class="line">                        queue[rear++] = k;</span><br><span class="line">                    &#125;</span><br><span class="line">                    node = node.nextEdge;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 打印矩阵队列图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.printf(<span class="string">"List Graph:\n"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mVexs.length; i++) &#123;</span><br><span class="line">            System.out.printf(<span class="string">"%d(%c): "</span>, i, mVexs[i].data);</span><br><span class="line">            ENode node = mVexs[i].firstEdge;</span><br><span class="line">            <span class="keyword">while</span> (node != <span class="keyword">null</span>) &#123;</span><br><span class="line">                System.out.printf(<span class="string">"%d(%c) "</span>, node.ivex, mVexs[node.ivex].data);</span><br><span class="line">                node = node.nextEdge;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.printf(<span class="string">"\n"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] vexs = &#123;<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>, <span class="string">'E'</span>, <span class="string">'F'</span>, <span class="string">'G'</span>&#125;;</span><br><span class="line">        <span class="keyword">char</span>[][] edges = <span class="keyword">new</span> <span class="keyword">char</span>[][]&#123;</span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'C'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'D'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'A'</span>, <span class="string">'F'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'B'</span>, <span class="string">'C'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'C'</span>, <span class="string">'D'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'E'</span>, <span class="string">'G'</span>&#125;, </span><br><span class="line">            &#123;<span class="string">'F'</span>, <span class="string">'G'</span>&#125;&#125;;</span><br><span class="line">        ListUDG pG;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 自定义"图"(输入矩阵队列)</span></span><br><span class="line">        <span class="comment">//pG = new ListUDG();</span></span><br><span class="line">        <span class="comment">// 采用已有的"图"</span></span><br><span class="line">        pG = <span class="keyword">new</span> ListUDG(vexs, edges);</span><br><span class="line"></span><br><span class="line">        pG.print();   <span class="comment">// 打印图</span></span><br><span class="line">        pG.DFS();     <span class="comment">// 深度优先遍历</span></span><br><span class="line">        pG.BFS();     <span class="comment">// 广度优先遍历</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1057,7 +1400,7 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -1211,7 +1554,7 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -1365,7 +1708,7 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -1522,7 +1865,7 @@
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
+      <meta itemprop="description" content="一点一滴的记录">
       <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
     </span>
 
@@ -1710,315 +2053,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2017/08/29/模拟实现ArrayList/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
-      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一只不正经的小程序猿">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/29/模拟实现ArrayList/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">模拟实现ArrayList</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-29 00:00:00" itemprop="dateCreated datePublished" datetime="2017-08-29T00:00:00+08:00">2017-08-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-19 23:46:44" itemprop="dateModified" datetime="2018-11-19T23:46:44+08:00">2018-11-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"><span class="keyword">import</span> java.util.NoSuchElementException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyList</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object[] elementData;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> defaultSize = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyList</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(defaultSize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyList</span><span class="params">(<span class="keyword">int</span> initSize)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(initSize &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"初始化链表大小不能小于0"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            elementData = <span class="keyword">new</span> Object[initSize];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size() == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> indexOf(o) &gt;= <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object[] toArray()&#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.copyOf(elementData, size);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E element)</span></span>&#123;</span><br><span class="line">        add(size(), element);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span></span>&#123;</span><br><span class="line">        ensureCapacity(index);  <span class="comment">//判断是否需要扩容</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = size() - <span class="number">1</span>;i &gt;= index; i--) &#123;</span><br><span class="line">            elementData[i + <span class="number">1</span>] = elementData[i];</span><br><span class="line">        &#125;</span><br><span class="line">        elementData[index] = element;</span><br><span class="line">        size++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">remove</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(o != <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(contains(o))&#123;</span><br><span class="line">                remove(indexOf(o));</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index &gt; size || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"下标越界"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            E tempElement = (E)elementData[index];</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = index; i &lt; size() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">                elementData[i] = elementData[i + <span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">            elementData[--size] = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">return</span> tempElement;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size(); i++) &#123;</span><br><span class="line">            elementData[i] = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index &gt; size() || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"下标越界"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (E)elementData[index];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> E <span class="title">set</span><span class="params">(<span class="keyword">int</span> index, E element)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index &gt; size() || index &lt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"下标越界"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        E oldElement = (E)elementData[index];</span><br><span class="line">        elementData[index] = element;</span><br><span class="line">        <span class="keyword">return</span> oldElement;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">indexOf</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(o == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i &lt; size;i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(elementData[i] == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;size; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(o.equals(elementData[i]))&#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lastIndexOf</span><span class="params">(Object o)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(o == <span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = size -<span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">                <span class="keyword">if</span>(elementData[i] == <span class="keyword">null</span>)&#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = size - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">                <span class="keyword">if</span>(o.equals(elementData[i]))&#123;</span><br><span class="line">                    <span class="keyword">return</span> i;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> MyListIterator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">        <span class="keyword">if</span>(minCapacity &lt; <span class="number">0</span> || minCapacity &gt; oldCapacity)&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> ArrayIndexOutOfBoundsException(<span class="string">"下标越界"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(minCapacity == oldCapacity)&#123;</span><br><span class="line">            <span class="keyword">int</span> newCapacity = oldCapacity + <span class="number">1</span>;</span><br><span class="line">            elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">MyListIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt;</span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">int</span> current = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> current &lt; size();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(!hasNext())&#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> (E)elementData[current++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2017/08/16/Virtualbox相关/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="..DD的记录">
-      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一只不正经的小程序猿">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/08/16/Virtualbox相关/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">Virtualbox相关</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-08-16 00:00:00" itemprop="dateCreated datePublished" datetime="2017-08-16T00:00:00+08:00">2017-08-16</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-19 23:33:37" itemprop="dateModified" datetime="2018-11-19T23:33:37+08:00">2018-11-19</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>####修改虚拟机镜像的uuid :<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./VBoxManage internalcommands sethduuid &apos;D:\VirtualBox OS\Debian.vdi&apos;</span><br></pre></td></tr></table></figure></p>
-<p>####压缩虚拟机镜像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo dd if=/dev/zero of=/EMPTY bs=1M</span><br><span class="line">sudo rm -f /EMPTY</span><br><span class="line">然后在物理机上执行：VBoxManage modifyhd mydisk.vdi –compact</span><br></pre></td></tr></table></figure></p>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2058,7 +2092,7 @@
               <img class="site-author-image" itemprop="image" src="https://i.postimg.cc/N0PcKGHc/touxiang.jpg" alt="Charlo">
             
               <p class="site-author-name" itemprop="name">Charlo</p>
-              <p class="site-description motion-element" itemprop="description">..DD的记录</p>
+              <p class="site-description motion-element" itemprop="description">一点一滴的记录</p>
           </div>
 
           
@@ -2068,7 +2102,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">21</span>
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2091,7 +2125,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2170,7 +2206,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love" id="animate">
     <i class="fa fa-user"></i>
   </span>

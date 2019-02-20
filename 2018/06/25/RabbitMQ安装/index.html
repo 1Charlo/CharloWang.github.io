@@ -115,25 +115,25 @@
 
 
 
-  <meta name="description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+  <meta name="description" content="RabbitMQ官方介绍： RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that M">
 <meta name="keywords" content="java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring事务异常回滚">
-<meta property="og:url" content="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/index.html">
+<meta property="og:title" content="RabbitMQ安装">
+<meta property="og:url" content="https://CharloWang.github.io/2018/06/25/RabbitMQ安装/index.html">
 <meta property="og:site_name" content="一只不正经的小程序猿">
-<meta property="og:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta property="og:description" content="RabbitMQ官方介绍： RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that M">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-19T15:38:10.018Z">
+<meta property="og:updated_time" content="2019-01-14T03:49:26.742Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring事务异常回滚">
-<meta name="twitter:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta name="twitter:title" content="RabbitMQ安装">
+<meta name="twitter:description" content="RabbitMQ官方介绍： RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that M">
 
 
 
 
 
 
-  <link rel="canonical" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+  <link rel="canonical" href="https://CharloWang.github.io/2018/06/25/RabbitMQ安装/">
 
 
 
@@ -143,7 +143,7 @@
   };
 </script>
 
-  <title>Spring事务异常回滚 | 一只不正经的小程序猿</title>
+  <title>RabbitMQ安装 | 一只不正经的小程序猿</title>
   
 
 
@@ -342,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/06/25/RabbitMQ安装/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring事务异常回滚
+          <h1 class="post-title" itemprop="name headline">RabbitMQ安装
               
             
           </h1>
@@ -384,7 +384,7 @@
                 
               
 
-              <time title="创建时间：2018-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-10T00:00:00+08:00">2018-03-10</time>
+              <time title="创建时间：2018-06-25 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-25T00:00:00+08:00">2018-06-25</time>
             
 
             
@@ -401,7 +401,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-19 23:38:10" itemprop="dateModified" datetime="2018-11-19T23:38:10+08:00">2018-11-19</time>
+                <time title="修改时间：2019-01-14 11:49:26" itemprop="dateModified" datetime="2019-01-14T11:49:26+08:00">2019-01-14</time>
               
             
           </span>
@@ -441,12 +441,25 @@
       
 
       
-        <p>转：<a href="https://blog.csdn.net/yipanbo/article/details/46048413" target="_blank" rel="noopener">https://blog.csdn.net/yipanbo/article/details/46048413</a><br>为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。<br>例：<br>类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的方法回滚（一个方法出错，另一个方法会回滚）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;         </span><br><span class="line">     <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;         </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();         </span><br><span class="line">     &#125;          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);          </span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();         </span><br><span class="line">    &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>为什么不会滚呢？？是对Spring的事务机制就不明白。！！<br>默认spring事务只在发生未被捕获的 runtimeexcetpion时才回滚。<br>spring aop  异常捕获原理：被拦截的方法需显式抛出异常，并不能经任何处理，这样aop代理才能捕获到方法的异常，才能进行回滚，默认情况下aop只捕获runtimeexception的异常，但可以通过配置来捕获特定的异常并回滚。换句话说在service的方法中不使用try catch 或者在catch中最后加上throw new runtimeexcetpion（），这样程序异常时才能被aop捕获进而回滚。<br>解决方案：<br>方案1.例如service层处理事务，那么service中的方法中不做异常捕获，或者在catch语句中最后增加throw new RuntimeException()语句，以便让aop捕获异常再去回滚，并且在service上层（webservice客户端，view层action）要继续捕获这个异常并处理。<br>方案2.在service层方法的catch语句中增加：TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();语句，手动回滚，这样上层就无需去处理异常（现在项目的做法）。<br>方案3：（推荐）<br>在所在的方法上加上rollbackFor ,形如：@Transactional(readOnly = true, rollbackFor = Exception.class)。</p>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <h2 id="RabbitMQ官方介绍："><a href="#RabbitMQ官方介绍：" class="headerlink" title="RabbitMQ官方介绍："></a>RabbitMQ官方介绍：</h2><blockquote>
+<p>RabbitMQ is a message broker: it accepts and forwards messages. You can think about it as a post office: when you put the mail that you want posting in a post box, you can be sure that Mr. or Ms. Mailperson will eventually deliver the mail to your recipient. In this analogy, RabbitMQ is a post box, a post office and a postman.<br>The major difference between RabbitMQ and the post office is that it doesn’t deal with paper, instead it accepts, stores and forwards binary blobs of data ‒ messages.<br>翻译：<br>RabbitMQ 是一个消息代理: 它接受和转发消息。你可以把它想成邮局: 当你把你想要投递的信件放入邮箱, 你可以确信邮递员最终会将邮件传递给你的收件人。在这个比喻中, RabbitMQ 是一个邮箱, 一个邮局和一个邮递员。<br>RabbitMQ 和邮局的主要区别在于它不处理纸面文件, 而是接受、存储和转发二进制的消息数据。</p>
+</blockquote>
+<h3 id="RabbitMQ安装："><a href="#RabbitMQ安装：" class="headerlink" title="RabbitMQ安装："></a>RabbitMQ安装：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">添加源：</span><br><span class="line">echo &apos;deb http://www.rabbitmq.com/debian/ testing main&apos; | sudo tee /etc/apt/sources.list.d/rabbitmq.list</span><br><span class="line">添加公钥：</span><br><span class="line">wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc | sudo apt-key add -</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install rabbitmq-server</span><br></pre></td></tr></table></figure>
+<p>看看是不是有rabbitmq的进程：<code>pgrep -l rabbit</code>，看到有rabbit的进程则表示安装成功。<br>程序连接服务的端口是：5672<br>远程访问rabbitmq【浏览器管理rabbitmq】：localhost:15672或者ip:15672</p>
+<h3 id="不能远程怎么办？"><a href="#不能远程怎么办？" class="headerlink" title="不能远程怎么办？"></a>不能远程怎么办？</h3><p>答案是需要开启权限，默认是不能远程访问的</p>
+<blockquote>
+<p>在<code>/etc/rabbitmq</code>下新增rabbitmq.config文件， 输入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[  </span><br><span class="line">&#123;rabbit, [&#123;tcp_listeners, [5672]&#125;, &#123;loopback_users, [&quot;username&quot;]&#125;]&#125;  </span><br><span class="line">].</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>然后授权：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/lib/rabbitmq/bin/</span><br><span class="line">sudo rabbitmqctl add_user username password</span><br><span class="line">sudo rabbitmqctl set_user_tags username administrator</span><br><span class="line">sudo rabbitmqctl set_permissions -p / username &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>之后重启服务就可以了。</p>
+</blockquote>
+<h3 id="rabbitmq基本操作："><a href="#rabbitmq基本操作：" class="headerlink" title="rabbitmq基本操作："></a>rabbitmq基本操作：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service rabbitmq-server start      # 启动</span><br><span class="line">service rabbitmq-server stop      # 停止</span><br><span class="line">service rabbitmq-server restart      # 重启</span><br></pre></td></tr></table></figure>
+<h3 id="开启web界面管理工具"><a href="#开启web界面管理工具" class="headerlink" title="开启web界面管理工具"></a>开启web界面管理工具</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq-plugins enable rabbitmq_management</span><br><span class="line">service rabbitmq-server restart</span><br></pre></td></tr></table></figure>
+<h3 id="相关问题解决"><a href="#相关问题解决" class="headerlink" title="相关问题解决"></a>相关问题解决</h3><p>无法启动的问题：<br>1、如果是非admin用户，可能因为文件或文件夹的权限问题，导致无法启动。此时可以换到root账户，或者：<br>    将/etc下rabbitmq目录的所有者改为当前用户：<code>sudo chmod -R abcdef:abcdef ./rabbitmq</code><br>2、如果提示缺少文件enabled_plugins。在/etc/rabbitmq下创建enabled_plugins文件即可。当前用户的权限即可。    </p>
+
       
     </div>
 
@@ -506,8 +519,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/10/深度优先搜索和广度优先搜索/" rel="next" title="深度优先搜索和广度优先搜索">
-                <i class="fa fa-chevron-left"></i> 深度优先搜索和广度优先搜索
+              <a href="/2018/03/10/Spring事务异常回滚/" rel="next" title="Spring事务异常回滚">
+                <i class="fa fa-chevron-left"></i> Spring事务异常回滚
               </a>
             
           </div>
@@ -516,8 +529,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/25/RabbitMQ安装/" rel="prev" title="RabbitMQ安装">
-                RabbitMQ安装 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/27/RabbitMQ使用场景及实例/" rel="prev" title="RabbitMQ使用场景及实例">
+                RabbitMQ使用场景及实例 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -563,8 +576,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -671,6 +693,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ官方介绍："><span class="nav-number">1.</span> <span class="nav-text">RabbitMQ官方介绍：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ安装："><span class="nav-number">1.1.</span> <span class="nav-text">RabbitMQ安装：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不能远程怎么办？"><span class="nav-number">1.2.</span> <span class="nav-text">不能远程怎么办？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rabbitmq基本操作："><span class="nav-number">1.3.</span> <span class="nav-text">rabbitmq基本操作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启web界面管理工具"><span class="nav-number">1.4.</span> <span class="nav-text">开启web界面管理工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关问题解决"><span class="nav-number">1.5.</span> <span class="nav-text">相关问题解决</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

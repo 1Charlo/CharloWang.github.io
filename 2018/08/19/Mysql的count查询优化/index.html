@@ -115,25 +115,39 @@
 
 
 
-  <meta name="description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
-<meta name="keywords" content="java">
+  <meta name="description" content="一般情况下，单张表的数据量达到百万级别时，对整张表做count查询时，速度会比较慢，一般在5秒以上。 优化方向：利用mysql的索引实例场景：  my_product表的引擎。如图： my_product表，数据量在百万以上，列级元素的量相对适中。如图:   my_product表中的数据量，如图： 已创建的索引，如图：  A、简单的count查询1select count(*) from my_">
+<meta name="keywords" content="Mysql">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring事务异常回滚">
-<meta property="og:url" content="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/index.html">
+<meta property="og:title" content="Mysql的count查询优化">
+<meta property="og:url" content="https://CharloWang.github.io/2018/08/19/Mysql的count查询优化/index.html">
 <meta property="og:site_name" content="一只不正经的小程序猿">
-<meta property="og:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta property="og:description" content="一般情况下，单张表的数据量达到百万级别时，对整张表做count查询时，速度会比较慢，一般在5秒以上。 优化方向：利用mysql的索引实例场景：  my_product表的引擎。如图： my_product表，数据量在百万以上，列级元素的量相对适中。如图:   my_product表中的数据量，如图： 已创建的索引，如图：  A、简单的count查询1select count(*) from my_">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-19T15:38:10.018Z">
+<meta property="og:image" content="https://i.postimg.cc/wxc5Kxrw/Snipaste-2018-11-15-15-47-48.png">
+<meta property="og:image" content="https://i.postimg.cc/Gp8P6F0D/Snipaste-2018-11-15-15-15-38.png">
+<meta property="og:image" content="https://i.postimg.cc/8z0PXkr6/Snipaste-2018-11-15-15-20-09.png">
+<meta property="og:image" content="https://i.postimg.cc/xCSQBXjc/Snipaste-2018-11-15-15-34-36.png">
+<meta property="og:image" content="https://i.postimg.cc/Px1W5d5r/Snipaste-2018-11-15-15-30-13.png">
+<meta property="og:image" content="https://i.postimg.cc/5y1wHDX5/Snipaste-2018-11-15-15-40-25.png">
+<meta property="og:image" content="https://i.postimg.cc/YqTsdJCS/Snipaste-2018-11-15-15-32-17.png">
+<meta property="og:image" content="https://i.postimg.cc/zD6sQLd5/Snipaste-2018-11-15-15-41-50.png">
+<meta property="og:image" content="https://i.postimg.cc/MpX1j7pL/Snipaste-2018-11-15-15-53-35.png">
+<meta property="og:image" content="https://i.postimg.cc/dVXrRh7V/Snipaste-2018-11-15-15-54-57.png">
+<meta property="og:image" content="https://i.postimg.cc/250J73qs/Snipaste-2018-11-15-15-57-28.png">
+<meta property="og:image" content="https://i.postimg.cc/PqwZSdZz/Snipaste-2018-11-15-16-07-12.png">
+<meta property="og:image" content="https://i.postimg.cc/Bv7Y1yks/Snipaste-2018-11-15-16-11-50.png">
+<meta property="og:updated_time" content="2019-02-18T15:03:11.509Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring事务异常回滚">
-<meta name="twitter:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta name="twitter:title" content="Mysql的count查询优化">
+<meta name="twitter:description" content="一般情况下，单张表的数据量达到百万级别时，对整张表做count查询时，速度会比较慢，一般在5秒以上。 优化方向：利用mysql的索引实例场景：  my_product表的引擎。如图： my_product表，数据量在百万以上，列级元素的量相对适中。如图:   my_product表中的数据量，如图： 已创建的索引，如图：  A、简单的count查询1select count(*) from my_">
+<meta name="twitter:image" content="https://i.postimg.cc/wxc5Kxrw/Snipaste-2018-11-15-15-47-48.png">
 
 
 
 
 
 
-  <link rel="canonical" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+  <link rel="canonical" href="https://CharloWang.github.io/2018/08/19/Mysql的count查询优化/">
 
 
 
@@ -143,7 +157,7 @@
   };
 </script>
 
-  <title>Spring事务异常回滚 | 一只不正经的小程序猿</title>
+  <title>Mysql的count查询优化 | 一只不正经的小程序猿</title>
   
 
 
@@ -342,7 +356,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/08/19/Mysql的count查询优化/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
@@ -359,7 +373,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring事务异常回滚
+          <h1 class="post-title" itemprop="name headline">Mysql的count查询优化
               
             
           </h1>
@@ -384,7 +398,7 @@
                 
               
 
-              <time title="创建时间：2018-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-10T00:00:00+08:00">2018-03-10</time>
+              <time title="创建时间：2018-08-19 22:20:43" itemprop="dateCreated datePublished" datetime="2018-08-19T22:20:43+08:00">2018-08-19</time>
             
 
             
@@ -401,7 +415,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-19 23:38:10" itemprop="dateModified" datetime="2018-11-19T23:38:10+08:00">2018-11-19</time>
+                <time title="修改时间：2019-02-18 23:03:11" itemprop="dateModified" datetime="2019-02-18T23:03:11+08:00">2019-02-18</time>
               
             
           </span>
@@ -441,12 +455,29 @@
       
 
       
-        <p>转：<a href="https://blog.csdn.net/yipanbo/article/details/46048413" target="_blank" rel="noopener">https://blog.csdn.net/yipanbo/article/details/46048413</a><br>为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。<br>例：<br>类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的方法回滚（一个方法出错，另一个方法会回滚）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;         </span><br><span class="line">     <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;         </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();         </span><br><span class="line">     &#125;          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);          </span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();         </span><br><span class="line">    &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>为什么不会滚呢？？是对Spring的事务机制就不明白。！！<br>默认spring事务只在发生未被捕获的 runtimeexcetpion时才回滚。<br>spring aop  异常捕获原理：被拦截的方法需显式抛出异常，并不能经任何处理，这样aop代理才能捕获到方法的异常，才能进行回滚，默认情况下aop只捕获runtimeexception的异常，但可以通过配置来捕获特定的异常并回滚。换句话说在service的方法中不使用try catch 或者在catch中最后加上throw new runtimeexcetpion（），这样程序异常时才能被aop捕获进而回滚。<br>解决方案：<br>方案1.例如service层处理事务，那么service中的方法中不做异常捕获，或者在catch语句中最后增加throw new RuntimeException()语句，以便让aop捕获异常再去回滚，并且在service上层（webservice客户端，view层action）要继续捕获这个异常并处理。<br>方案2.在service层方法的catch语句中增加：TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();语句，手动回滚，这样上层就无需去处理异常（现在项目的做法）。<br>方案3：（推荐）<br>在所在的方法上加上rollbackFor ,形如：@Transactional(readOnly = true, rollbackFor = Exception.class)。</p>
-<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <p>一般情况下，单张表的数据量达到百万级别时，对整张表做count查询时，速度会比较慢，一般在5秒以上。</p>
+<h3 id="优化方向：利用mysql的索引"><a href="#优化方向：利用mysql的索引" class="headerlink" title="优化方向：利用mysql的索引"></a>优化方向：利用mysql的索引</h3><p>实例场景：</p>
+<ul>
+<li>my_product表的引擎。如图：<br><img src="https://i.postimg.cc/wxc5Kxrw/Snipaste-2018-11-15-15-47-48.png" alt="引擎"></li>
+<li>my_product表，数据量在百万以上，列级元素的量相对适中。如图:<br><img src="https://i.postimg.cc/Gp8P6F0D/Snipaste-2018-11-15-15-15-38.png" alt="my_product的表结构">  </li>
+<li>my_product表中的数据量，如图：<br><img src="https://i.postimg.cc/8z0PXkr6/Snipaste-2018-11-15-15-20-09.png" alt="my_product表的数据量"></li>
+<li>已创建的索引，如图：<br><img src="https://i.postimg.cc/xCSQBXjc/Snipaste-2018-11-15-15-34-36.png" alt="索引"></li>
+</ul>
+<h4 id="A、简单的count查询"><a href="#A、简单的count查询" class="headerlink" title="A、简单的count查询"></a>A、简单的count查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product;</span><br></pre></td></tr></table></figure>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/Px1W5d5r/Snipaste-2018-11-15-15-30-13.png" alt="结果"><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) <span class="keyword">from</span> my_product;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://i.postimg.cc/5y1wHDX5/Snipaste-2018-11-15-15-40-25.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/YqTsdJCS/Snipaste-2018-11-15-15-32-17.png" alt="分析"><br><img src="https://i.postimg.cc/zD6sQLd5/Snipaste-2018-11-15-15-41-50.png" alt="分析"></p>
+<h6 id="从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。"><a href="#从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。" class="headerlink" title="从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。"></a>从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。</h6><h4 id="B、带条件的count查询【使用主键索引】"><a href="#B、带条件的count查询【使用主键索引】" class="headerlink" title="B、带条件的count查询【使用主键索引】"></a>B、带条件的count查询【使用主键索引】</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/MpX1j7pL/Snipaste-2018-11-15-15-53-35.png" alt="结果"><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="number">0</span>) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure></p>
+<p>查询结果，如图：<br><img src="https://i.postimg.cc/dVXrRh7V/Snipaste-2018-11-15-15-54-57.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/250J73qs/Snipaste-2018-11-15-15-57-28.png" alt="分析"></p>
+<h6 id="从结果分析可以看出，该查询使用了主键索引，键长为110-虽然本次查询使用了索引，但是时间任然非常长。"><a href="#从结果分析可以看出，该查询使用了主键索引，键长为110-虽然本次查询使用了索引，但是时间任然非常长。" class="headerlink" title="从结果分析可以看出，该查询使用了主键索引，键长为110.虽然本次查询使用了索引，但是时间任然非常长。"></a>从结果分析可以看出，该查询使用了主键索引，键长为110.虽然本次查询使用了索引，但是时间任然非常长。</h6><h4 id="C、使用了索引的count查询【自建索引】"><a href="#C、使用了索引的count查询【自建索引】" class="headerlink" title="C、使用了索引的count查询【自建索引】"></a>C、使用了索引的count查询【自建索引】</h4><p>创建一个新的索引，索引字段为audit_state。<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> my_product <span class="keyword">add</span> <span class="keyword">index</span> idx_audit_state(audit_state);</span><br></pre></td></tr></table></figure></p>
+<p>然后同样使用原来的查询条件<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> my_product <span class="keyword">where</span> <span class="keyword">id</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure></p>
+<p>mysql查询结果：<br><img src="https://i.postimg.cc/PqwZSdZz/Snipaste-2018-11-15-16-07-12.png" alt="结果"></p>
+<p>mysql分析结果：<br><img src="https://i.postimg.cc/Bv7Y1yks/Snipaste-2018-11-15-16-11-50.png" alt="分析"></p>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><p>从上面两个对比可以看出，虽然b、c两种查询都使用了索引，但b查询使用的是主键索引，而c查询使用的是自建索引。<br>主键索引默认直接指向数据存储位置，而自建索引存储指定字段的索引，实际的指向位置是主键索引。当我们通过自建索引统计数据的时候，无需扫描数据文件；而通过主键索引统计数据时，由于主键索引与数据文件存放在一起，所以每次都会扫描数据文件，所以主键索引统计没有自建索引效率高。</p>
+<p>由于主键索引直接指向实际数据，所以当我们通过主键id查询数据时要比通过二级索引查询数据要快。</p>
+
       
     </div>
 
@@ -493,7 +524,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"> java</i></a>
+            <a href="/tags/Mysql/" rel="tag"><i class="fa fa-tag"> Mysql</i></a>
           
         </div>
       
@@ -506,8 +537,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/10/深度优先搜索和广度优先搜索/" rel="next" title="深度优先搜索和广度优先搜索">
-                <i class="fa fa-chevron-left"></i> 深度优先搜索和广度优先搜索
+              <a href="/2018/07/01/HAProxy安装配置/" rel="next" title="HAProxy安装配置">
+                <i class="fa fa-chevron-left"></i> HAProxy安装配置
               </a>
             
           </div>
@@ -515,10 +546,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/RabbitMQ安装/" rel="prev" title="RabbitMQ安装">
-                RabbitMQ安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -563,8 +590,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -671,6 +707,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#优化方向：利用mysql的索引"><span class="nav-number">1.</span> <span class="nav-text">优化方向：利用mysql的索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#A、简单的count查询"><span class="nav-number">1.1.</span> <span class="nav-text">A、简单的count查询</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">从分析结果可以看出，该查询并没有用到索引，所以count时，mysql会遍历整张表，因此查询速度非常慢。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B、带条件的count查询【使用主键索引】"><span class="nav-number">1.2.</span> <span class="nav-text">B、带条件的count查询【使用主键索引】</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#从结果分析可以看出，该查询使用了主键索引，键长为110-虽然本次查询使用了索引，但是时间任然非常长。"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">从结果分析可以看出，该查询使用了主键索引，键长为110.虽然本次查询使用了索引，但是时间任然非常长。</span></a></li></ol></li></ol><li class="nav-item nav-level-4"><a class="nav-link" href="#C、使用了索引的count查询【自建索引】"><span class="nav-number">1.3.</span> <span class="nav-text">C、使用了索引的count查询【自建索引】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比"><span class="nav-number"></span> <span class="nav-text">对比</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
