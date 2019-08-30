@@ -115,25 +115,25 @@
 
 
 
-  <meta name="description" content="1xx消息这些状态码代表的响应都是消息性的，不具备实际意义，只表示“请求已被接受，请继续执行操作”。服务器禁止向此类客户端发送1xx响应。  100：继续。客户端应继续其请求   101：切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议  2xx成功这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。  200：请求已成功，请求所希望的响应头或数据体将随此响应返回 201：">
+  <meta name="description" content="Java IO操作1、普通的文件读取（字节流）123456789File file = new File(filePath);try &amp;#123;    FileInputStream stream = new FileInputStream(file);    byte[] buff = new byte[1024];    int len = 0;    while ((len = strea">
 <meta name="keywords" content="网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HTTP状态码对照">
-<meta property="og:url" content="https://CharloWang.github.io/2017/09/02/HTTP状态码对照/index.html">
+<meta property="og:title" content="Java IO操作">
+<meta property="og:url" content="https://CharloWang.github.io/2019/08/31/Java IO操作/index.html">
 <meta property="og:site_name" content="一只不正经的小程序猿">
-<meta property="og:description" content="1xx消息这些状态码代表的响应都是消息性的，不具备实际意义，只表示“请求已被接受，请继续执行操作”。服务器禁止向此类客户端发送1xx响应。  100：继续。客户端应继续其请求   101：切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议  2xx成功这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。  200：请求已成功，请求所希望的响应头或数据体将随此响应返回 201：">
+<meta property="og:description" content="Java IO操作1、普通的文件读取（字节流）123456789File file = new File(filePath);try &amp;#123;    FileInputStream stream = new FileInputStream(file);    byte[] buff = new byte[1024];    int len = 0;    while ((len = strea">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-25T14:14:36.573Z">
+<meta property="og:updated_time" content="2019-08-30T16:26:45.268Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HTTP状态码对照">
-<meta name="twitter:description" content="1xx消息这些状态码代表的响应都是消息性的，不具备实际意义，只表示“请求已被接受，请继续执行操作”。服务器禁止向此类客户端发送1xx响应。  100：继续。客户端应继续其请求   101：切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议  2xx成功这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。  200：请求已成功，请求所希望的响应头或数据体将随此响应返回 201：">
+<meta name="twitter:title" content="Java IO操作">
+<meta name="twitter:description" content="Java IO操作1、普通的文件读取（字节流）123456789File file = new File(filePath);try &amp;#123;    FileInputStream stream = new FileInputStream(file);    byte[] buff = new byte[1024];    int len = 0;    while ((len = strea">
 
 
 
 
 
 
-  <link rel="canonical" href="https://CharloWang.github.io/2017/09/02/HTTP状态码对照/">
+  <link rel="canonical" href="https://CharloWang.github.io/2019/08/31/Java IO操作/">
 
 
 
@@ -143,7 +143,7 @@
   };
 </script>
 
-  <title>HTTP状态码对照 | 一只不正经的小程序猿</title>
+  <title>Java IO操作 | 一只不正经的小程序猿</title>
   
 
 
@@ -342,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2017/09/02/HTTP状态码对照/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2019/08/31/Java IO操作/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HTTP状态码对照
+          <h1 class="post-title" itemprop="name headline">Java IO操作
               
             
           </h1>
@@ -384,24 +384,12 @@
                 
               
 
-              <time title="创建时间：2017-09-02 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-02T00:00:00+08:00">2017-09-02</time>
+              <time title="创建时间：2019-08-31 00:00:00 / 修改时间：00:26:45" itemprop="dateCreated datePublished" datetime="2019-08-31T00:00:00+08:00">2019-08-31</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-25 22:14:36" itemprop="dateModified" datetime="2018-11-25T22:14:36+08:00">2018-11-25</time>
               
             
           </span>
@@ -441,60 +429,15 @@
       
 
       
-        <h2 id="1xx消息"><a href="#1xx消息" class="headerlink" title="1xx消息"></a>1xx消息</h2><p>这些状态码代表的响应都是消息性的，不具备实际意义，只表示“请求已被接受，请继续执行操作”。服务器禁止向此类客户端发送1xx响应。</p>
-<ul>
-<li>100：继续。客户端应继续其请求  </li>
-<li>101：切换协议。服务器根据客户端的请求切换协议。只能切换到更高级的协议</li>
-</ul>
-<h2 id="2xx成功"><a href="#2xx成功" class="headerlink" title="2xx成功"></a>2xx成功</h2><p>这一类型的状态码，代表请求已成功被服务器接收、理解、并接受。</p>
-<ul>
-<li>200：请求已成功，请求所希望的响应头或数据体将随此响应返回</li>
-<li>201：请求已经被实现，而且有一个新的资源已经依据请求的需要而建立，且其URI已经随Location头信息返回。【即：请求创建新资源，且成功了】</li>
-<li>202：服务器已接受请求，但尚未处理。最终该请求可能会也可能不会被执行</li>
-<li>203：服务器是一个转换代理服务器。服务器已成功处理了请求，但返回的信息可能来自另一来源</li>
-<li>204：服务器成功处理了请求，没有返回任何内容</li>
-<li>205：服务器成功处理了请求，但没有返回任何内容，且要求请求者重置文档视图。【与204不同之处：要求客户端刷新内容】</li>
-<li>206：服务器已经成功处理了部分GET请求</li>
-</ul>
-<h2 id="3xx重定向"><a href="#3xx重定向" class="headerlink" title="3xx重定向"></a>3xx重定向</h2><p>这类状态码代表需要客户端采取进一步的操作才能完成请求。通常，这些状态码用来重定向，后续的请求地址（重定向目标）在本次响应的Location域中指明。<strong>当且仅当后续的请求所使用的方法是GET或者HEAD时，用户浏览器才可以在没有用户介入的情况下自动提交所需要的后续请求。</strong></p>
-<ul>
-<li>300：被请求的资源有一系列可供选择的回馈信息，每个都有自己特定的地址和浏览器驱动的商议信息。用户或浏览器能够自行选择一个首选的地址进行重定向</li>
-<li>301：被请求的资源已永久移动到新位置，返回信息会包括新的URI，浏览器会自动定向到新URI</li>
-<li>302：要求客户端执行临时重定向，由于这样的重定向是临时的，客户端应当继续向原有地址发送以后的请求。</li>
-<li>303：请求者应当对不同的位置使用单独的 GET 请求来检索响应时，服务器返回此代码</li>
-<li>304：所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</li>
-<li>305：被请求的资源必须通过指定的代理才能被访问</li>
-</ul>
-<h2 id="4xx客户端错误"><a href="#4xx客户端错误" class="headerlink" title="4xx客户端错误"></a>4xx客户端错误</h2><p>这类的状态码代表了客户端看起来可能发生了错误【请求错误】，妨碍了服务器的处理。</p>
-<ul>
-<li>400：客户端请求的语法错误，服务器无法理解</li>
-<li>401：“未认证”，即用户没有必要的凭据。该状态码表示当前请求需要用户验证</li>
-<li>402：保留状态码，将来使用</li>
-<li>403：服务器已经理解请求，但是拒绝执行它</li>
-<li>404：请求失败，请求所希望得到的资源未在服务器上发现，但允许用户的后续请求</li>
-<li>405：客户端请求中的方法被禁止</li>
-<li>406：无法使用请求的内容特性响应请求的网页</li>
-<li>407：请求要求代理的身份认证，与401类似，但请求者应当使用代理进行授权</li>
-<li>408：服务器等待客户端发送的请求时间过长，超时</li>
-<li>409：表示因为请求存在冲突无法处理该请求</li>
-<li>410：客户端请求的资源已经不存在，已永久删除</li>
-<li>411：服务器拒绝不含Content-Length请求头字段的请求</li>
-<li>412：服务器在验证在请求的头字段中给出先决条件时，没能满足其中的一个或多个</li>
-<li>413：由于请求的实体过大，服务器无法处理，因此拒绝请求</li>
-<li>414：请求的URI长度过长，服务器无法处理</li>
-<li>415：请求中提交的互联网媒体类型并不是服务器中所支持的格式，因此请求被拒绝</li>
-<li>416：客户端请求的范围无效</li>
-<li>417：服务器无法满足Expect的请求头信息</li>
-</ul>
-<h2 id="5xx服务器错误"><a href="#5xx服务器错误" class="headerlink" title="5xx服务器错误"></a>5xx服务器错误</h2><p>这些状态代码表示服务器在尝试处理请求时发生内部错误。 这些错误可能是服务器本身的错误，而不是请求出错。</p>
-<ul>
-<li>500：服务器内部错误，无法完成请求</li>
-<li>501：服务器不支持请求的功能，无法完成请求</li>
-<li>502：充当网关或代理的服务器，从远端服务器接收到了一个无效的请求</li>
-<li>503：由于超载或系统维护，服务器暂时的无法处理客户端的请求。延时的长度可包含在服务器的Retry-After头信息中</li>
-<li>504：充当网关或代理的服务器，未及时从远端服务器获取请求</li>
-<li>505：服务器不支持请求的HTTP协议的版本，无法完成处理</li>
-</ul>
+        <h1 id="Java-IO操作"><a href="#Java-IO操作" class="headerlink" title="Java IO操作"></a>Java IO操作</h1><p><strong>1、普通的文件读取（字节流）</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream stream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = stream.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff, <span class="number">0</span>, len, <span class="string">"UTF-8"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、普通文件的读取（字符流）</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InputStreamReader reader = <span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(file), <span class="string">"GBK"</span>);</span><br><span class="line">    <span class="keyword">char</span>[] buff = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = reader.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、文件的复制</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath1);</span><br><span class="line">File file2 = <span class="keyword">new</span> File(filePath2);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream stream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    FileOutputStream outputStream = <span class="keyword">new</span> FileOutputStream(file2);</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = stream.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        outputStream.write(buff);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、文件读取的优化（字节缓冲流）</strong><br>用字节流每次都会涉及磁盘的IO，速度慢，cpu消耗大，所以用缓冲流，性能会更好。缓冲流性能比字节流好n倍<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream inputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    BufferedInputStream  bis = <span class="keyword">new</span> BufferedInputStream(inputStream);</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">while</span>((len = bis.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff, <span class="number">0</span>, len, <span class="string">"UTF-8"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、字符缓冲流</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InputStreamReader streamReader = <span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(file), <span class="string">"GBK"</span>);</span><br><span class="line">    BufferedReader reader = <span class="keyword">new</span> BufferedReader(streamReader);</span><br><span class="line">    String temp = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> ((temp = reader.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">        System.out.println(temp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>6、随机读</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    RandomAccessFile randomFile = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"r"</span>);</span><br><span class="line">    <span class="keyword">long</span> fileLength = randomFile.length();</span><br><span class="line">    <span class="keyword">int</span> beginIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//将读文件的开始位置移到beginIndex位置</span></span><br><span class="line">    randomFile.seek(beginIndex);</span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">10</span>];</span><br><span class="line">    <span class="comment">//读10字节</span></span><br><span class="line">    randomFile.read(bytes);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>7、追加</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    RandomAccessFile randomFile = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"rw"</span>);</span><br><span class="line">    <span class="keyword">long</span> fileLength = randomFile.length();</span><br><span class="line">    <span class="comment">//将写文件指针移到文件尾。</span></span><br><span class="line">    randomFile.seek(fileLength);</span><br><span class="line">    randomFile.write(content);</span><br><span class="line">    <span class="comment">//randomFile.writeBytes(content);</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>8、字节缓冲流写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream fos = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    fos = <span class="keyword">new</span> FileOutputStream(filePath);</span><br><span class="line">    BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(fos,<span class="number">1000000</span>);</span><br><span class="line">    bos.write(content);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>9、字符缓冲流写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(filePath);</span><br><span class="line">    OutputStreamWriter writer = <span class="keyword">new</span> OutputStreamWriter(fos, <span class="string">"UTF-8"</span>);</span><br><span class="line">    PrintWriter pw = <span class="keyword">new</span> PrintWriter(writer, <span class="keyword">true</span>);</span><br><span class="line">    pw.print(content);</span><br><span class="line">    <span class="comment">//pw.println(content);</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -555,8 +498,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/29/模拟实现ArrayList/" rel="next" title="模拟实现ArrayList">
-                <i class="fa fa-chevron-left"></i> 模拟实现ArrayList
+              <a href="/2019/04/25/NodeJS内存泄露检测工具-memwatch安装/" rel="next" title="memwatch安装">
+                <i class="fa fa-chevron-left"></i> memwatch安装
               </a>
             
           </div>
@@ -564,10 +507,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/25/单例模式/" rel="prev" title="单例模式">
-                单例模式 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -739,7 +678,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1xx消息"><span class="nav-number">1.</span> <span class="nav-text">1xx消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2xx成功"><span class="nav-number">2.</span> <span class="nav-text">2xx成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3xx重定向"><span class="nav-number">3.</span> <span class="nav-text">3xx重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4xx客户端错误"><span class="nav-number">4.</span> <span class="nav-text">4xx客户端错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5xx服务器错误"><span class="nav-number">5.</span> <span class="nav-text">5xx服务器错误</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-IO操作"><span class="nav-number">1.</span> <span class="nav-text">Java IO操作</span></a></li></ol></div>
             
 
           </div>

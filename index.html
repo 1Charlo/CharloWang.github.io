@@ -341,6 +341,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2019/08/31/Java IO操作/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Charlo">
+      <meta itemprop="description" content="一点一滴的记录">
+      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="一只不正经的小程序猿">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/31/Java IO操作/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">Java IO操作</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-31 00:00:00 / 修改时间：00:26:45" itemprop="dateCreated datePublished" datetime="2019-08-31T00:00:00+08:00">2019-08-31</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Java-IO操作"><a href="#Java-IO操作" class="headerlink" title="Java IO操作"></a>Java IO操作</h1><p><strong>1、普通的文件读取（字节流）</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream stream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = stream.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff, <span class="number">0</span>, len, <span class="string">"UTF-8"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>2、普通文件的读取（字符流）</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InputStreamReader reader = <span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(file), <span class="string">"GBK"</span>);</span><br><span class="line">    <span class="keyword">char</span>[] buff = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = reader.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>3、文件的复制</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath1);</span><br><span class="line">File file2 = <span class="keyword">new</span> File(filePath2);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream stream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    FileOutputStream outputStream = <span class="keyword">new</span> FileOutputStream(file2);</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> ((len = stream.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        outputStream.write(buff);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、文件读取的优化（字节缓冲流）</strong><br>用字节流每次都会涉及磁盘的IO，速度慢，cpu消耗大，所以用缓冲流，性能会更好。缓冲流性能比字节流好n倍<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileInputStream inputStream = <span class="keyword">new</span> FileInputStream(file);</span><br><span class="line">    BufferedInputStream  bis = <span class="keyword">new</span> BufferedInputStream(inputStream);</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">byte</span>[] buff = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">while</span>((len = bis.read(buff)) != -<span class="number">1</span>)&#123;</span><br><span class="line">        System.out.println(<span class="keyword">new</span> String(buff, <span class="number">0</span>, len, <span class="string">"UTF-8"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、字符缓冲流</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    InputStreamReader streamReader = <span class="keyword">new</span> InputStreamReader(<span class="keyword">new</span> FileInputStream(file), <span class="string">"GBK"</span>);</span><br><span class="line">    BufferedReader reader = <span class="keyword">new</span> BufferedReader(streamReader);</span><br><span class="line">    String temp = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">while</span> ((temp = reader.readLine()) != <span class="keyword">null</span>)&#123;</span><br><span class="line">        System.out.println(temp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (FileNotFoundException e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>6、随机读</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    RandomAccessFile randomFile = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"r"</span>);</span><br><span class="line">    <span class="keyword">long</span> fileLength = randomFile.length();</span><br><span class="line">    <span class="keyword">int</span> beginIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">//将读文件的开始位置移到beginIndex位置</span></span><br><span class="line">    randomFile.seek(beginIndex);</span><br><span class="line">    <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">10</span>];</span><br><span class="line">    <span class="comment">//读10字节</span></span><br><span class="line">    randomFile.read(bytes);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>7、追加</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">File file = <span class="keyword">new</span> File(filePath);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    RandomAccessFile randomFile = <span class="keyword">new</span> RandomAccessFile(file, <span class="string">"rw"</span>);</span><br><span class="line">    <span class="keyword">long</span> fileLength = randomFile.length();</span><br><span class="line">    <span class="comment">//将写文件指针移到文件尾。</span></span><br><span class="line">    randomFile.seek(fileLength);</span><br><span class="line">    randomFile.write(content);</span><br><span class="line">    <span class="comment">//randomFile.writeBytes(content);</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>8、字节缓冲流写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FileOutputStream fos = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    fos = <span class="keyword">new</span> FileOutputStream(filePath);</span><br><span class="line">    BufferedOutputStream bos = <span class="keyword">new</span> BufferedOutputStream(fos,<span class="number">1000000</span>);</span><br><span class="line">    bos.write(content);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>9、字符缓冲流写</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(filePath);</span><br><span class="line">    OutputStreamWriter writer = <span class="keyword">new</span> OutputStreamWriter(fos, <span class="string">"UTF-8"</span>);</span><br><span class="line">    PrintWriter pw = <span class="keyword">new</span> PrintWriter(writer, <span class="keyword">true</span>);</span><br><span class="line">    pw.print(content);</span><br><span class="line">    <span class="comment">//pw.println(content);</span></span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2019/04/25/NodeJS内存泄露检测工具-memwatch安装/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2020,160 +2170,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2017/09/29/Java集合继承关系图/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Charlo">
-      <meta itemprop="description" content="一点一滴的记录">
-      <meta itemprop="image" content="https://i.postimg.cc/N0PcKGHc/touxiang.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="一只不正经的小程序猿">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2017/09/29/Java集合继承关系图/" class="post-title-link" itemprop="https://CharloWang.github.io/index.html">Java集合继承关系图</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-09-29 00:00:00" itemprop="dateCreated datePublished" datetime="2017-09-29T00:00:00+08:00">2017-09-29</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-25 22:26:24" itemprop="dateModified" datetime="2018-11-25T22:26:24+08:00">2018-11-25</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><img src="https://i.postimg.cc/qvsNPhhR/java-collection-framework-1.jpg" alt=""><br><img src="https://i.postimg.cc/kGR4fBP7/java-collection-framework-2.jpg" alt=""><br><img src="https://i.postimg.cc/hGMfGk0R/java-collection-framework-3.gif" alt=""></p>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2223,7 +2219,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-count">24</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
